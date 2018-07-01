@@ -5,14 +5,21 @@
 
 All functions were tested using Python version 3. 
 
+
 ## pydoc - Module documentation 
 
-DESCRIPTION
+**NAME**
+
+    pcof - Python Collection Of Functions
+
+**DESCRIPTION**
+
     This module has a collection of many small generic useful functions.
     
     Developed for Python 3
 
-FUNCTIONS
+**FUNCTIONS**
+
     bytes2human(size, *, unit='', precision=2, base=1024)
         Convert number in bytes to human format
         
