@@ -1,7 +1,11 @@
-Help on module pcof:
 
-NAME
-    pcof - Python Collection Of Functions
+# pcof - Python Collection Of Functions
+
+## Prerequisites
+
+All functions were tested using Python version 3. 
+
+## pydoc - Module documentation 
 
 DESCRIPTION
     This module has a collection of many small generic useful functions.
@@ -287,7 +291,6 @@ FUNCTIONS
         '81.8000'
         >>> x_pct_of_number(40.9, 200, precision=0)
 
-FILE
-    /home/thobias/repo/pcof/pcof.py
+
 
 
