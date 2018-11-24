@@ -13,6 +13,7 @@ import logging
 import subprocess
 import datetime
 import sys
+import re
 import smtplib
 import collections
 import prettytable
@@ -276,6 +277,34 @@ def run_cmd(cmd):
         return process.returncode, stderr
     else:
         return process.returncode, stdout_output
+
+
+##############################################################################
+##############################################################################
+## Validate IP address
+##############################################################################
+##############################################################################
+
+def validate_ip(ip_address):
+    """
+    Validate IP address format
+
+    Arguments:
+        ip_address   (str): IP address
+
+    Returns:
+        If it is a valid IP address, return a corresponding match object,
+        otherwise, return None.
+
+    Exemple:
+        >>> pcof.validate_ip('127.0.0.1')
+        <_sre.SRE_Match object; span=(0, 9), match='127.0.0.1'>
+        >>> pcof.validate_ip('127.0.0.a')
+        >>>
+    """
+    ip_regex = r'^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}(/[0-9]{1,3})?$'
+    regex = re.compile(ip_regex)
+    return regex.match(ip_address)
 
 
 ##############################################################################
