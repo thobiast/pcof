@@ -233,6 +233,38 @@ def nested_dict():
     return collections.defaultdict(nested_dict)
 
 
+def find_key(dict_obj, key):
+    """
+    Function to loop over a dictionary and search for an specific key
+    It supports nested dictionary
+    Params:
+        dict_obj    (obj): A list or a dictionary
+        key         (str): dictionary key
+
+    Return a list with values that matches the key
+    """
+    # List to store values
+    results = list()
+
+    # if dict_obj is a dictionary
+    if isinstance(dict_obj, dict):
+        for k, v in dict_obj.items():
+            # if value is == key
+            if k == key:
+                results.append(v)
+            else:
+                # call function again, it can be a nested dict
+                results.extend(find_key(v, key))
+    # If dict_obj is a list
+    elif isinstance(dict_obj, list):
+        # for each item, call again the function, as maybe there are
+        # dict inside the list
+        for item in dict_obj:
+            results.extend(find_key(item, key))
+
+    return results
+
+
 ##############################################################################
 ##############################################################################
 ## Execute command
