@@ -23,8 +23,15 @@ import collections
 ##############################################################################
 ##############################################################################
 
-def msg(color, msg_text, exitcode=0, *,
-        mail_from=None, mail_to=None, mail_server='localhost', subject=None):
+def msg(color,
+        msg_text,
+        exitcode=0,
+        *,
+        mail_from=None,
+        mail_to=None,
+        mail_server='localhost',
+        subject=None,
+        end='\n'):
     """
     Print colored text.
 
@@ -41,6 +48,9 @@ def msg(color, msg_text, exitcode=0, *,
         mail_to     (str, opt): send email to this address
         subject     (str, opt): mail subject
         mail_server (str, opt): mail server address
+        end         (str, opt): string appended after the last value,
+                                default a newline
+
 
     Exemplo:
         msg("blue", "nice text in blue")
@@ -58,7 +68,8 @@ def msg(color, msg_text, exitcode=0, *,
         print(msg_text)
     else:
         try:
-            print(color_dic[color] + msg_text + color_dic['resetcolor'])
+            print(color_dic[color] + msg_text + color_dic['resetcolor'],
+                  end=end)
         except KeyError as exc:
             raise ValueError("Invalid color") from exc
 
