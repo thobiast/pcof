@@ -67,7 +67,7 @@ def msg(color,
                  'resetcolor': '\033[0m'}
 
     if not color or color == 'nocolor':
-        print(msg_text)
+        print(msg_text, end=end)
     else:
         try:
             print(color_dic[color] + msg_text + color_dic['resetcolor'],
