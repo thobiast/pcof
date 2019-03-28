@@ -265,6 +265,81 @@ def find_key(dict_obj, key):
     return results
 
 
+def return_dict_value(dictionary, keys, *, ignore_key_error=False):
+    """
+    Recursively iterate over a dictionary and return value
+    for the key. Key must be a list. Each element of the list refers
+    to the level of the dicionary
+
+    It helps to reduce number of code lines when we need to perform may
+    try: except: to catch KeyErrors
+
+    Args:
+       dictionary              (dict): Dictionary
+       keys                    (list): List with key(s)
+       ignore_key_error  (True/False): Ignore key not found errors:
+                                         True  - return '' if key not found
+                                         False - raise exception
+                                       default: False
+
+    Example:
+    >>> from pcof import return_dict_value
+    >>> mydic = { 'a': 'value_a',
+    ...           'b': {
+    ...                  'b1': 'value_b1',
+    ...                  'b2': 'value_b2'
+    ...                },
+    ...           'c': {
+    ...                  'c1': {
+    ...                          'c11': 'value_c11',
+    ...                          'c12': 'value_c12'
+    ...                         }
+    ...                },
+    ...          }
+    >>> return_dict_value(mydic, ['a'])
+        'value_a'
+    >>> return_dict_value(mydic, ['b'])
+        {'b2': 'value_b2', 'b1': 'value_b1'}
+    >>> return_dict_value(mydic, ['b', 'b1'])
+        'value_b1'
+    >>> return_dict_value(mydic, ['c', 'c1', 'c12'])
+        'value_c12'
+    >>> return_dict_value(mydic, ['c', 'c1', 'c13'])
+        Traceback (most recent call last):
+          File "<stdin>", line 1, in <module>
+          File "/home/thobias/repo/pcof/pcof.py", line 288, in return_dict_value
+            return return_dict_value(dictionary[keys[0]], keys[1:])
+          File "/home/thobias/repo/pcof/pcof.py", line 288, in return_dict_value
+            return return_dict_value(dictionary[keys[0]], keys[1:])
+          File "/home/thobias/repo/pcof/pcof.py", line 297, in return_dict_value
+            return dictionary[keys[0]]
+        KeyError: 'c13'
+    >>> return_dict_value(mydic, ['c', 'c1', 'c13'], ignore_key_error=True)
+        ''
+    >>> return_dict_value(mydic, ['x'], ignore_key_error=True)
+        ''
+    """
+    # Check if there is more than one key
+    if len(keys) > 1:
+        # More keys in the last, call function again
+        try:
+            return return_dict_value(dictionary[keys[0]], keys[1:])
+        except (KeyError, TypeError):
+            if ignore_key_error:
+                return ''
+            else:
+                raise
+    else:
+        # It is the last key, try to return the dict value for the key
+        try:
+            return dictionary[keys[0]]
+        except (KeyError, TypeError):
+            if ignore_key_error:
+                return ''
+            else:
+                raise
+
+
 ##############################################################################
 ##############################################################################
 ## Execute command
