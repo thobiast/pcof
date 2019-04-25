@@ -1,25 +1,25 @@
 
 # pcof - Python Collection Of Functions
 
-## Prerequisites
 
-All functions were tested using Python version 3. 
+### Prerequisites
+
+All functions were tested using Python version 3.
 
 
-## pydoc - Module documentation 
+### Documentation (automatically generated using pydoc)
 
-**NAME**
+Help on module pcof:
 
+NAME
     pcof - Python Collection Of Functions
 
-**DESCRIPTION**
-
+DESCRIPTION
     This module has a collection of many small generic useful functions.
     
     Developed for Python 3
 
-**FUNCTIONS**
-
+FUNCTIONS
     bytes2human(size, *, unit='', precision=2, base=1024)
         Convert number in bytes to human format
         
@@ -148,6 +148,15 @@ All functions were tested using Python version 3.
         >>> epoch_time_to_human(1530324373, utc='yes')
         'Sat Jun 30 02:06:13 2018'
     
+    find_key(dict_obj, key)
+        Function to loop over a dictionary and search for an specific key
+        It supports nested dictionary
+        Params:
+            dict_obj    (obj): A list or a dictionary
+            key         (str): dictionary key
+        
+        Return a list with values that matches the key
+    
     human2bytes(size, unit, *, precision=2, base=1024)
         Convert size from human to bytes
         
@@ -173,7 +182,7 @@ All functions were tested using Python version 3.
             >>> human2bytes(10, 'PB')
             '11258999068426240.00'
     
-    msg(color, msg_text, exitcode=0, *, mail_from=None, mail_to=None, mail_server='localhost', subject=None)
+    msg(color, msg_text, exitcode=0, *, mail_from=None, mail_to=None, mail_server='localhost', subject=None, end='\n')
         Print colored text.
         
         Arguments:
@@ -189,6 +198,9 @@ All functions were tested using Python version 3.
             mail_to     (str, opt): send email to this address
             subject     (str, opt): mail subject
             mail_server (str, opt): mail server address
+            end         (str, opt): string appended after the last value,
+                                    default a newline
+        
         
         Exemplo:
             msg("blue", "nice text in blue")
@@ -235,6 +247,73 @@ All functions were tested using Python version 3.
         >>> pct_two_numbers(10, 50)
         '20.00'
     
+    print_table(header, rows, *, sortby='', alignl='', alignr='', hrules='')
+        Print table using module prettytable
+        Arguments:
+            header     (list): List with table header
+            rows       (list): Nested list with table rows
+                               [ [row1], [row2], [row3], ... ]
+        
+        Keyword arguments (optional):
+            sortby      (str): header name to sort the output
+            alignl     (list): headers name to align to left
+            alignr     (list): headers name to align to right
+            hrules      (str): Controls printing of horizontal rules after rows.
+                               Allowed values: FRAME, HEADER, ALL, NONE
+    
+    return_dict_value(dictionary, keys, *, ignore_key_error=False)
+        Recursively iterate over a dictionary and return value
+        for the key. Key must be a list. Each element of the list refers
+        to the level of the dicionary
+        
+        It helps to reduce number of code lines when we need to perform may
+        try: except: to catch KeyErrors
+        
+        Args:
+           dictionary              (dict): Dictionary
+           keys                    (list): List with key(s)
+           ignore_key_error  (True/False): Ignore key not found errors:
+                                             True  - return '' if key not found
+                                             False - raise exception
+                                           default: False
+        
+        Example:
+        >>> from pcof import return_dict_value
+        >>> mydic = { 'a': 'value_a',
+        ...           'b': {
+        ...                  'b1': 'value_b1',
+        ...                  'b2': 'value_b2'
+        ...                },
+        ...           'c': {
+        ...                  'c1': {
+        ...                          'c11': 'value_c11',
+        ...                          'c12': 'value_c12'
+        ...                         }
+        ...                },
+        ...          }
+        >>> return_dict_value(mydic, ['a'])
+            'value_a'
+        >>> return_dict_value(mydic, ['b'])
+            {'b2': 'value_b2', 'b1': 'value_b1'}
+        >>> return_dict_value(mydic, ['b', 'b1'])
+            'value_b1'
+        >>> return_dict_value(mydic, ['c', 'c1', 'c12'])
+            'value_c12'
+        >>> return_dict_value(mydic, ['c', 'c1', 'c13'])
+            Traceback (most recent call last):
+              File "<stdin>", line 1, in <module>
+              File "/home/thobias/repo/pcof/pcof.py", line 288, in return_dict_value
+                return return_dict_value(dictionary[keys[0]], keys[1:])
+              File "/home/thobias/repo/pcof/pcof.py", line 288, in return_dict_value
+                return return_dict_value(dictionary[keys[0]], keys[1:])
+              File "/home/thobias/repo/pcof/pcof.py", line 297, in return_dict_value
+                return dictionary[keys[0]]
+            KeyError: 'c13'
+        >>> return_dict_value(mydic, ['c', 'c1', 'c13'], ignore_key_error=True)
+            ''
+        >>> return_dict_value(mydic, ['x'], ignore_key_error=True)
+            ''
+    
     run_cmd(cmd)
         Execute a command on the operating system
         
@@ -247,6 +326,30 @@ All functions were tested using Python version 3.
         
             - If command completes with return code different from zero
             return: command_return_code, stderr
+    
+    seconds_to_human(seconds, *, unit=None)
+        Convert number in seconds to human format
+        
+        Arguments:
+            seconds   (int):                               Number of seconds
+        
+        Keyword arguments (opt):
+            unit      (Months/Days/Hours/Minutes/Seconds): Max unit used
+                                                           to convert
+        
+        Exemple:
+        >>> seconds_to_human(300)
+        '5 Minutes'
+        >>> seconds_to_human(310)
+        '5 Minutes, 10 Seconds'
+        >>> seconds_to_human(10810)
+        '3 Hours, 10 Seconds'
+        >>> seconds_to_human(10810, unit='Minutes')
+        '180 Minutes, 10 Seconds'
+        >>> seconds_to_human(180072)
+        '2 Days, 2 Hours, 1 Minutes, 12 Seconds'
+        >>> seconds_to_human(5191272)
+        '2 Months, 2 Hours, 1 Minutes, 12 Seconds'
     
     send_email(mail_from, mail_to, subject, body, mailserver='localhost')
         Send an email using smtplib module
@@ -273,6 +376,22 @@ All functions were tested using Python version 3.
                                DEBUG, INFO, WARNING, ERROR or CRITICAL
                                default is DEBUG
     
+    validate_ip(ip_address)
+        Validate IP address format
+        
+        Arguments:
+            ip_address   (str): IP address
+        
+        Returns:
+            If it is a valid IP address, return a corresponding match object,
+            otherwise, return None.
+        
+        Exemple:
+            >>> pcof.validate_ip('127.0.0.1')
+            <_sre.SRE_Match object; span=(0, 9), match='127.0.0.1'>
+            >>> pcof.validate_ip('127.0.0.a')
+            >>>
+    
     x_pct_of_number(pct, number, *, precision='2')
         Calculate what is the x% of a number
         
@@ -297,7 +416,4 @@ All functions were tested using Python version 3.
         >>> x_pct_of_number(40.9, 200, precision=4)
         '81.8000'
         >>> x_pct_of_number(40.9, 200, precision=0)
-
-
-
 
