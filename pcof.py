@@ -725,4 +725,63 @@ def epoch_time_days_ago(days=1, *, utc='no'):
     return int(epoch_time_now(utc=utc) - (days * 24 * 3600))
 
 
+##############################################################################
+##############################################################################
+## Date and Time conversion
+##############################################################################
+##############################################################################
+
+def seconds_to_human(seconds, *, unit=None):
+    """
+    Convert number in seconds to human format
+
+    Arguments:
+        seconds   (int):                               Number of seconds
+
+    Keyword arguments (opt):
+        unit      (Months/Days/Hours/Minutes/Seconds): Max unit used
+                                                       to convert
+
+    Exemple:
+    >>> seconds_to_human(300)
+    '5 Minutes'
+    >>> seconds_to_human(310)
+    '5 Minutes, 10 Seconds'
+    >>> seconds_to_human(10810)
+    '3 Hours, 10 Seconds'
+    >>> seconds_to_human(10810, unit='Minutes')
+    '180 Minutes, 10 Seconds'
+    >>> seconds_to_human(180072)
+    '2 Days, 2 Hours, 1 Minutes, 12 Seconds'
+    >>> seconds_to_human(5191272)
+    '2 Months, 2 Hours, 1 Minutes, 12 Seconds'
+    """
+    seconds_list = [("Years", 31536000), # 1 year = 365 days (60 * 60 * 24 * 365)
+                    ("Months", 2592000), # 1 month = 30 days (60 * 60 * 24 * 30)
+                    ("Days", 86400),     # 1 day    (60 * 60 * 24)
+                    ("Hours", 3600),     # 1 hour   (60 * 60)
+                    ("Minutes", 60),     # 1 minute (60)
+                    ("Seconds", 1)]      # 1 second
+
+    if seconds == 0:
+        return "0 Seconds"
+    elif seconds < 0:
+        raise TypeError(
+            "error: seconds_to_human: seconds must be greater than 0")
+
+    if unit:
+        try:
+            index = [a for a, b in enumerate(seconds_list) if b[0] == unit][0]
+        except IndexError:
+            raise TypeError("error: seconds_to_human: unit is invalid")
+        seconds_list = seconds_list[index:]
+
+    result = list()
+    for unit, unit_value_in_sec in seconds_list:
+        num_unit = seconds // unit_value_in_sec
+        if num_unit:
+            seconds -=  num_unit * unit_value_in_sec
+            result.append("{} {}".format(num_unit, unit))
+    return ", ".join(result)
+
 # vim: ts=4
