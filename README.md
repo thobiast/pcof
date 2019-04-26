@@ -2,12 +2,12 @@
 # pcof - Python Collection Of Functions
 
 
-### Prerequisites
+## Prerequisites
 
 All functions were tested using Python version 3.
 
 
-### Documentation (automatically generated using pydoc)
+## Documentation (automatically generated using pydoc)
 
 Help on module pcof:
 
@@ -48,6 +48,29 @@ FUNCTIONS
             ('25.4', 'GB')
             >>> bytes2human(27273042329, unit='MB')
             ('26009.60', 'MB')
+    
+    convert_datetime_to_tz(*, date, date_fmt, from_tz='UTC', to_tz='America/Sao_Paulo')
+        Convert a date to a specific timezone.
+        
+        Keyword arguments:
+        
+            date      (str):      date to convert
+            date_fmt  (str):      format of the date to convert
+            from_tz   (timezone): source timezone name (default: UTC)
+            to_tz     (timezone): target timezone name (default: America/Sao_Paulo)
+        
+        Returns:
+            datetime object with the target timezone defined.
+        
+        Example:
+        >>> convert_datetime_to_tz(date='2019-04-26T10:38:05Z', date_fmt="%Y-%m-%dT%H:%M:%SZ")
+        datetime.datetime(2019, 4, 26, 7, 38, 5, tzinfo=<DstTzInfo 'America/Sao_Paulo' -03-1 day, 21:00:00 STD>)
+        
+        >>> convert_datetime_to_tz(date='2019-04-26T10:38:05Z', date_fmt="%Y-%m-%dT%H:%M:%SZ", from_tz="America/Sao_Paulo", to_tz="America/Los_Angeles")
+        datetime.datetime(2019, 4, 26, 6, 38, 5, tzinfo=<DstTzInfo 'America/Los_Angeles' PDT-1 day, 17:00:00 DST>)
+        
+        >>> convert_datetime_to_tz(date='2019-04-26T10:38:05Z', date_fmt="%Y-%m-%dT%H:%M:%SZ", from_tz="America/Sao_Paulo", to_tz="Asia/Dubai")
+        datetime.datetime(2019, 4, 26, 17, 38, 5, tzinfo=<DstTzInfo 'Asia/Dubai' +04+4:00:00 STD>)
     
     epoch_time_days_ago(days=1, *, utc='no')
         Return current date and time with less x days in unix epoch time format
@@ -337,7 +360,7 @@ FUNCTIONS
             unit      (Months/Days/Hours/Minutes/Seconds): Max unit used
                                                            to convert
         
-        Exemple:
+        Example:
         >>> seconds_to_human(300)
         '5 Minutes'
         >>> seconds_to_human(310)
