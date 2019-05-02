@@ -10,13 +10,13 @@ Developed for Python 3
 # Site: http://thobias.org
 
 import logging
-import subprocess
-import datetime
-import pytz
 import sys
 import re
 import smtplib
 import collections
+import subprocess
+import datetime
+import pytz
 import prettytable
 
 
@@ -781,7 +781,7 @@ def seconds_to_human(seconds, *, unit=None):
     for unit, unit_value_in_sec in seconds_list:
         num_unit = seconds // unit_value_in_sec
         if num_unit:
-            seconds -=  num_unit * unit_value_in_sec
+            seconds -= num_unit * unit_value_in_sec
             result.append("{} {}".format(num_unit, unit))
     return ", ".join(result)
 
