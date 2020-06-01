@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 """
-Python Collection Of Functions
+Python Collection Of Functions.
 
 This module has a collection of many small generic useful functions.
 
@@ -9,57 +10,47 @@ Developed for Python 3
 # Author: Thobias Salazar Trevisan
 # Site: http://thobias.org
 
-import logging
-import sys
-import re
-import smtplib
+
 import collections
-import subprocess
 import datetime
-import pytz
+import logging
+import smtplib
+import subprocess
+import sys
+
 import prettytable
 
+import pytz
+
 
 ##############################################################################
 ##############################################################################
-## Print text
+# Print text
 ##############################################################################
 ##############################################################################
 
-def msg(color,
-        msg_text,
-        exitcode=0,
-        *,
-        mail_from=None,
-        mail_to=None,
-        mail_server='localhost',
-        subject=None,
-        end='\n'):
+def msg(color, msg_text, exitcode=0, *, end='\n'):
     """
     Print colored text.
 
     Arguments:
-        size      (str): color name (blue, red, green, yellow,
-                                     cyan or nocolor)
-        msg_text  (str): text to be printed
+        size           (str): color name (blue, red, green, yellow,
+                              cyan or nocolor)
+
+        msg_text       (str): text to be printed
+
         exitcode  (int, opt): Optional parameter. If exitcode is different
                               from zero, it terminates the script, i.e,
                               it calls sys.exit with the exitcode informed
 
-    Keyword arguments to send the msg_text by email too:
-        mail_from   (str, opt): send email from this address
-        mail_to     (str, opt): send email to this address
-        subject     (str, opt): mail subject
-        mail_server (str, opt): mail server address
-        end         (str, opt): string appended after the last value,
-                                default a newline
+    Keyword arguments (optional):
+        end            (str): string appended after the last value,
+                              default a newline
 
-
-    Exemplo:
+    Example:
         msg("blue", "nice text in blue")
-        msg("red", "Error in my script.. terminating", 1)
+        msg("red", "Error in my script. terminating", 1)
     """
-
     color_dic = {'blue': '\033[0;34m',
                  'red': '\033[1;31m',
                  'green': '\033[0;32m',
@@ -76,10 +67,6 @@ def msg(color,
         except KeyError as exc:
             raise ValueError("Invalid color") from exc
 
-    # Send email if necessary
-    if mail_from and mail_to and subject:
-        send_email(mail_from, mail_to, subject, msg_text, mail_server)
-
     # flush stdout
     sys.stdout.flush()
 
@@ -89,7 +76,8 @@ def msg(color,
 
 def print_table(header, rows, *, sortby='', alignl='', alignr='', hrules=''):
     """
-    Print table using module prettytable
+    Print table using module prettytable.
+
     Arguments:
         header     (list): List with table header
         rows       (list): Nested list with table rows
@@ -101,6 +89,17 @@ def print_table(header, rows, *, sortby='', alignl='', alignr='', hrules=''):
         alignr     (list): headers name to align to right
         hrules      (str): Controls printing of horizontal rules after rows.
                            Allowed values: FRAME, HEADER, ALL, NONE
+
+    Example:
+    >>> header = ["col1", "col2"]
+    >>> rows = [ ["line1_col1", "line1_col2"], ["line2_col1", "line2_col2"] ]
+    >>> print_table(header, rows)
+    +------------+------------+
+    |    col1    |    col2    |
+    +------------+------------+
+    | line1_col1 | line1_col2 |
+    | line2_col1 | line2_col2 |
+    +------------+------------+
     """
     output = prettytable.PrettyTable(header)
     output.format = True
@@ -108,7 +107,9 @@ def print_table(header, rows, *, sortby='', alignl='', alignr='', hrules=''):
         output.hrules = getattr(prettytable, hrules)
 
     for row in rows:
-        row_entry = list()
+        if len(header) != len(row):
+            raise ValueError("row does not have same size of header")
+        row_entry = []
         for pos in row:
             row_entry.append(pos)
         output.add_row(row_entry)
@@ -127,18 +128,20 @@ def print_table(header, rows, *, sortby='', alignl='', alignr='', hrules=''):
 
 ##############################################################################
 ##############################################################################
-## Email
+# Email
 ##############################################################################
 ##############################################################################
 
-def send_email(mail_from, mail_to, subject, body, mailserver='localhost'):
+
+def send_email(mail_from, mail_to, subject, body,
+               mailserver='localhost'):  # pragma: no cover
     """
-    Send an email using smtplib module
+    Send an email using smtplib module.
 
     Arguments:
-        mail_from   (str): send email from this address
-        mail_to     (str): send email to this address
-        subject     (str): mail subject
+        mail_from        (str): send email from this address
+        mail_to          (str): send email to this address
+        subject          (str): mail subject
         mail_server (str, opt): mail server address. Default is localhost
     """
     mail_msg = """\
@@ -159,12 +162,15 @@ Subject: %s
 
 ##############################################################################
 ##############################################################################
-## Log
+# Log
 ##############################################################################
-def setup_logging(logfile=None, *,
-                  filemode='a', date_format=None, log_level='DEBUG'):
+##############################################################################
+
+def setup_logging(
+        logfile=None, *,
+        filemode='a', date_format=None, log_level='DEBUG'):  # pragma: no cover
     """
-    Configure logging
+    Configure logging.
 
     Arguments (opt):
         logfile     (str): log file to write the log messages
@@ -195,57 +201,79 @@ def setup_logging(logfile=None, *,
 
     log_fmt = '%(asctime)s %(module)s %(funcName)s %(levelname)s %(message)s'
 
-    try:
-        logging.basicConfig(level=dict_level[log_level],
-                            format=log_fmt,
-                            datefmt=date_format,
-                            filemode=filemode,
-                            filename=logfile)
-    except:
-        raise
+    logging.basicConfig(level=dict_level[log_level],
+                        format=log_fmt,
+                        datefmt=date_format,
+                        filemode=filemode,
+                        filename=logfile)
 
     return logging.getLogger(__name__)
 
 
 ##############################################################################
 ##############################################################################
-## Dictionary
+# Dictionary
 ##############################################################################
 ##############################################################################
 
-def nested_dict():
+def nested_dict():  # pragma: no cover
     """
-    Returns a nested dictionary, i.e, an dictionary with
-    arbitrary number of levels.
+    Return a nested dictionary (arbitrary number of levels).
 
     Example:
     >>> mydict = nested_dict()
-    >>> mydict['aa']['bb']['cc'] = 'teste'
-    >>> print(mydict)
-         defaultdict(<function nested_dict at 0x7f1e74b8bea0>, {'aa':
-         defaultdict(<function nested_dict at 0x7f1e74b8bea0>, {'bb':
-         defaultdict(<function nested_dict at 0x7f1e74b8bea0>, {'cc':
-         'teste'})})})
-    >>> import pprint
-    >>> pprint.pprint(mydict)
-         {'aa': {'bb': {'cc': 'teste'}}}
-
+    >>> mydict['a1']['b1']['c1'] = 'test_1'
+    >>> mydict['a1']['b2'] = 'test_2'
+    >>> mydict['a1']['b3'] = 'test_3'
+    >>> mydict.keys()
+    dict_keys(['a1'])
+    >>> mydict['a1'].keys()
+    dict_keys(['b1', 'b2', 'b3'])
+    >>> mydict['a1']['b1'].keys()
+    dict_keys(['c1'])
+    >>> mydict['a1']['b1']['c1']
+    'test_1'
+    >>> mydict['a1']['b2']
+    'test_2'
+    >>> print(mydict) # doctest: +SKIP
+    defaultdict(<function nested_dict at 0x7f0239f4aee0>,
+        {'a1': defaultdict(<function nested_dict at 0x7f0239f4aee0>,
+        {'b1': defaultdict(<function nested_dict at 0x7f0239f4aee0>,
+            {'c1': 'test_1'}),
+        'b2': 'test_2',
+        'b3': 'test_3'})})
     """
     return collections.defaultdict(nested_dict)
 
 
 def find_key(dict_obj, key):
     """
+    Return a value for a key in a dictionary.
+
     Function to loop over a dictionary and search for an specific key
     It supports nested dictionary
-    Params:
+
+    Arguments:
         dict_obj    (obj): A list or a dictionary
         key         (str): dictionary key
 
-    Return a list with values that matches the key
+    Return:
+        (list)           : a list with values that matches the key
+
+    Example:
+    >>> x = {"A1": "A", "B1": { "A2": "AA"} }
+    >>> find_key(x, "A1")
+    ['A']
+    >>> find_key(x, "A2")
+    ['AA']
+    >>> find_key(x, "YY")
+    []
+    >>> x = {"A1": "A", "B1": { "A1": "AA"} }
+    >>> find_key(x, "A1")
+    ['A', 'AA']
     """
     # List to store values
-    results = list()
+    results = []
 
     # if dict_obj is a dictionary
     if isinstance(dict_obj, dict):
@@ -266,8 +294,11 @@ def find_key(dict_obj, key):
     return results
 
 
-def return_dict_value(dictionary, keys, *, ignore_key_error=False):
+def return_dict_value(
+        dictionary, keys, *, ignore_key_error=False):  # pragma: no cover
     """
+    Return a value from a dictionary.
+
     Recursively iterate over a dictionary and return value
     for the key. Key must be a list. Each element of the list refers
     to the level of the dicionary
@@ -275,7 +306,7 @@ def return_dict_value(dictionary, keys, *, ignore_key_error=False):
     It helps to reduce number of code lines when we need to perform may
     try: except: to catch KeyErrors
 
-    Args:
+    Arguments:
        dictionary              (dict): Dictionary
        keys                    (list): List with key(s)
        ignore_key_error  (True/False): Ignore key not found errors:
@@ -284,7 +315,6 @@ def return_dict_value(dictionary, keys, *, ignore_key_error=False):
                                        default: False
 
     Example:
-    >>> from pcof import return_dict_value
     >>> mydic = { 'a': 'value_a',
     ...           'b': {
     ...                  'b1': 'value_b1',
@@ -298,27 +328,21 @@ def return_dict_value(dictionary, keys, *, ignore_key_error=False):
     ...                },
     ...          }
     >>> return_dict_value(mydic, ['a'])
-        'value_a'
+    'value_a'
     >>> return_dict_value(mydic, ['b'])
-        {'b2': 'value_b2', 'b1': 'value_b1'}
+    {'b1': 'value_b1', 'b2': 'value_b2'}
     >>> return_dict_value(mydic, ['b', 'b1'])
-        'value_b1'
+    'value_b1'
     >>> return_dict_value(mydic, ['c', 'c1', 'c12'])
-        'value_c12'
+    'value_c12'
     >>> return_dict_value(mydic, ['c', 'c1', 'c13'])
-        Traceback (most recent call last):
-          File "<stdin>", line 1, in <module>
-          File "/home/thobias/repo/pcof/pcof.py", line 288, in return_dict_value
-            return return_dict_value(dictionary[keys[0]], keys[1:])
-          File "/home/thobias/repo/pcof/pcof.py", line 288, in return_dict_value
-            return return_dict_value(dictionary[keys[0]], keys[1:])
-          File "/home/thobias/repo/pcof/pcof.py", line 297, in return_dict_value
-            return dictionary[keys[0]]
-        KeyError: 'c13'
+    Traceback (most recent call last):
+    ...
+    KeyError: 'c13'
     >>> return_dict_value(mydic, ['c', 'c1', 'c13'], ignore_key_error=True)
-        ''
+    ''
     >>> return_dict_value(mydic, ['x'], ignore_key_error=True)
-        ''
+    ''
     """
     # Check if there is more than one key
     if len(keys) > 1:
@@ -328,8 +352,7 @@ def return_dict_value(dictionary, keys, *, ignore_key_error=False):
         except (KeyError, TypeError):
             if ignore_key_error:
                 return ''
-            else:
-                raise
+            raise
     else:
         # It is the last key, try to return the dict value for the key
         try:
@@ -337,19 +360,18 @@ def return_dict_value(dictionary, keys, *, ignore_key_error=False):
         except (KeyError, TypeError):
             if ignore_key_error:
                 return ''
-            else:
-                raise
+            raise
 
 
 ##############################################################################
 ##############################################################################
-## Execute command
+# Execute command
 ##############################################################################
 ##############################################################################
 
 def run_cmd(cmd):
-    """
-    Execute a command on the operating system
+    r"""
+    Execute a command on the operating system.
 
     Arguments:
         cmd    (str): the command to be executed
@@ -360,6 +382,13 @@ def run_cmd(cmd):
 
         - If command completes with return code different from zero
         return: command_return_code, stderr
+
+
+    Example:
+    >>> run_cmd("echo test")
+    (0, 'test\n')
+    >>> run_cmd("cmd_does_not_exist") # doctest:+ELLIPSIS
+    (127, '...cmd_does_not_exist: command not found\n')
     """
     process = subprocess.Popen(
         cmd,
@@ -375,55 +404,27 @@ def run_cmd(cmd):
         if nextline == '' and process.poll() is not None:
             break
         # print lines to stdout
-        #sys.stdout.write(nextline)
-        #sys.stdout.flush()
+        # sys.stdout.write(nextline)
+        # sys.stdout.flush()
         stdout_output += nextline
 
     stderr = process.communicate()[1]
 
     if process.returncode:
         return process.returncode, stderr
-    else:
-        return process.returncode, stdout_output
+
+    return process.returncode, stdout_output
 
 
 ##############################################################################
 ##############################################################################
-## Validate IP address
-##############################################################################
-##############################################################################
-
-def validate_ip(ip_address):
-    """
-    Validate IP address format
-
-    Arguments:
-        ip_address   (str): IP address
-
-    Returns:
-        If it is a valid IP address, return a corresponding match object,
-        otherwise, return None.
-
-    Exemple:
-        >>> pcof.validate_ip('127.0.0.1')
-        <_sre.SRE_Match object; span=(0, 9), match='127.0.0.1'>
-        >>> pcof.validate_ip('127.0.0.a')
-        >>>
-    """
-    ip_regex = r'^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}(/[0-9]{1,3})?$'
-    regex = re.compile(ip_regex)
-    return regex.match(ip_address)
-
-
-##############################################################################
-##############################################################################
-## Bytes convertion
+# Bytes convertion
 ##############################################################################
 ##############################################################################
 
 def bytes2human(size, *, unit='', precision=2, base=1024):
     """
-    Convert number in bytes to human format
+    Convert number in bytes to human format.
 
     Arguments:
         size        (int): bytes to be converted
@@ -437,19 +438,19 @@ def bytes2human(size, *, unit='', precision=2, base=1024):
 
     Returns:
         (int): number
-        (str): unit (Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB']
+        (str): unit ('Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB']
 
     Exemple:
-        >>> bytes2human(10)
-        ('10.00', 'Bytes')
-        >>> bytes2human(2048)
-        ('2.00', 'KB')
-        >>> bytes2human(27273042329)
-        ('25.40', 'GB')
-        >>> bytes2human(27273042329, precision=1)
-        ('25.4', 'GB')
-        >>> bytes2human(27273042329, unit='MB')
-        ('26009.60', 'MB')
+    >>> bytes2human(10)
+    ('10.00', 'Bytes')
+    >>> bytes2human(2048)
+    ('2.00', 'KB')
+    >>> bytes2human(27273042329)
+    ('25.40', 'GB')
+    >>> bytes2human(27273042329, precision=1)
+    ('25.4', 'GB')
+    >>> bytes2human(27273042329, unit='MB')
+    ('26009.60', 'MB')
     """
     # validate parameters
     if not isinstance(precision, int):
@@ -459,16 +460,17 @@ def bytes2human(size, *, unit='', precision=2, base=1024):
     try:
         num = float(size)
     except ValueError:
-        raise ValueError("Value is not a number")
+        raise ValueError("value is not a number")
 
-    suffix = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB']
+    suffix = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB']
 
     # If it needs to convert bytes to a specific unit
     if unit:
         try:
             num = num / base ** suffix.index(unit)
         except ValueError:
-            raise ValueError("Error: unit must be KB, MB, GB, TB, PB or EB")
+            raise ValueError("Error: unit must be {}".format(
+                ", ".join(suffix[1:])))
         return "{0:.{prec}f}".format(num, prec=precision), unit
 
     # Calculate the greatest unit for the that size
@@ -476,13 +478,13 @@ def bytes2human(size, *, unit='', precision=2, base=1024):
         if num < base:
             return "{0:.{prec}f}".format(num, prec=precision), suffix_unit
         if counter == len(suffix)-1:
-            raise ValueError("Value greater than the highest unit")
+            raise ValueError("value greater than the highest unit")
         num /= base
 
 
 def human2bytes(size, unit, *, precision=2, base=1024):
     """
-    Convert size from human to bytes
+    Convert size from human to bytes.
 
     Arguments:
         size       (int): number
@@ -512,39 +514,42 @@ def human2bytes(size, unit, *, precision=2, base=1024):
                  'GB': base ** 3,
                  'TB': base ** 4,
                  'PB': base ** 5,
-                 'EB': base ** 6}
+                 'EB': base ** 6,
+                 'ZB': base ** 7}
     if unit not in dic_power:
-        raise ValueError("Invalid unit. It must be KB, MB, GB, TB, PB or EB")
+        raise ValueError("invalid unit. It must be {}".format(
+            ", ".join(dic_power.keys())))
 
     try:
         num_bytes = float(size) * int(dic_power[unit])
     except ValueError:
-        raise ValueError("Value is not a number")
+        raise ValueError("value is not a number")
 
     return "{0:.{prec}f}".format(num_bytes, prec=precision)
 
 
 ##############################################################################
 ##############################################################################
-## Percentage Calculator
+# Percentage Calculator
 ##############################################################################
 ##############################################################################
 
-def pct_two_numbers(number1, number2, *, precision='2'):
+def pct_two_numbers(number1, number2, *, precision='2'):  # pragma: no cover
     """
-    Calculate the percentage of number1 to number2, i.e,
-    number1 is what percent of number2
+    Calculate the percentage of number1 to number2.
+
+    Number1 is what percent of number2
 
     Arguments:
-        number1 (int): number
-        number2 (int): number
+        number1     (int): number
+        number2     (int): number
 
     Keyword arguments (opt):
-        precision  (int): number of digits after the decimal point
-                          default is 2
+        precision   (int): number of digits after the decimal point
+                           default is 2
 
     Returns:
-        (int): Pct value
+        (str):  Pct value
 
     Example:
     >>> pct_two_numbers(30, 90)
@@ -563,9 +568,9 @@ def pct_two_numbers(number1, number2, *, precision='2'):
         return "{0:.{prec}f}".format(0, prec=precision)
 
 
-def x_pct_of_number(pct, number, *, precision='2'):
+def x_pct_of_number(pct, number, *, precision='2'):  # pragma: no cover
     """
-    Calculate what is the x% of a number
+    Calculate what is the x% of a number.
 
     Arguments:
         pct        (int): percentage
@@ -576,18 +581,19 @@ def x_pct_of_number(pct, number, *, precision='2'):
                           default is 2
 
     Returns:
-        (int):  number
+        (str):  number
 
     Exemple:
     >>> x_pct_of_number(33.333, 90)     # what is 33.333% of 90
     '30.00'
     >>> x_pct_of_number(40, 200)        # what is 40% of 200
     '80.00'
-    >>> x_pct_of_number(40.9, 200)      # what is 40.9* of 200
+    >>> x_pct_of_number(40.9, 200)      # what is 40.9% of 200
     '81.80'
     >>> x_pct_of_number(40.9, 200, precision=4)
     '81.8000'
     >>> x_pct_of_number(40.9, 200, precision=0)
+    '82'
     """
     num = number * pct / 100
     return "{0:.{prec}f}".format(num, prec=precision)
@@ -595,13 +601,14 @@ def x_pct_of_number(pct, number, *, precision='2'):
 
 ##############################################################################
 ##############################################################################
-## Unix epoch time conversion
+# Unix epoch time conversion
 ##############################################################################
 ##############################################################################
 
-def epoch_time_to_human(epoch, *, date_format='%c', utc='no'):
+def epoch_time_to_human(
+        epoch, *, date_format='%c', utc='no'):  # pragma: no cover
     """
-    Convert a unix epoch time to human format
+    Convert a unix epoch time to human format.
 
     Unix epoch time -  number of seconds that have elapsed since
                        00:00:00 Coordinated Universal Time (UTC),
@@ -618,22 +625,25 @@ def epoch_time_to_human(epoch, *, date_format='%c', utc='no'):
                               default is no
 
     Example:
-    >>> epoch_time_to_human(1530324373,'%m/%d/%Y %H:%M:%S')
-    '06/29/2018 23:06:13'
-    >>> epoch_time_to_human(1530324373)
+    >>> epoch_time_to_human(1530324373,date_format='%m%d%Y %H:%M:%S',utc='yes')
+    '06302018 02:06:13'
+    >>> epoch_time_to_human(1530324373) # doctest: +SKIP
     'Fri Jun 29 23:06:13 2018'
-    >>> epoch_time_to_human(1530324373, utc='yes')
+    >>> epoch_time_to_human(1530324373, utc='yes') # doctest: +SKIP
     'Sat Jun 30 02:06:13 2018'
     """
+    if not isinstance(epoch, int):
+        raise TypeError("epoch time must be int")
+
     if utc == 'yes':
         return datetime.datetime.utcfromtimestamp(epoch).strftime(date_format)
-    else:
-        return datetime.datetime.fromtimestamp(epoch).strftime(date_format)
+
+    return datetime.datetime.fromtimestamp(epoch).strftime(date_format)
 
 
 def epoch_time_now(*, utc='no'):
     """
-    Return current date and time in unix epoch time format
+    Return current date and time in unix epoch time format.
 
     Unix epoch time -  number of seconds that have elapsed since
                        00:00:00 Coordinated Universal Time (UTC),
@@ -643,20 +653,20 @@ def epoch_time_now(*, utc='no'):
         utc         (yes/no): If returns unix epoch time in UTC timezone
                               default is no
     Example:
-    >>> epoch_time_now()
+    >>> epoch_time_now() # doctest: +SKIP
     1530325275
     """
     if utc == 'yes':
         return int(datetime.datetime.utcnow().timestamp())
     elif utc == 'no':
         return int(datetime.datetime.now().timestamp())
-    else:
-        raise TypeError("error: epoch_time_now: utc is invalid")
+
+    raise ValueError("error: epoch_time_now: utc is invalid")
 
 
 def epoch_time_min_ago(minutes=5, *, utc='no'):
     """
-    Return current date and time less x minutes in unix epoch time format
+    Return current date and time less x minutes in unix epoch time format.
 
     Unix epoch time -  number of seconds that have elapsed since
                        00:00:00 Coordinated Universal Time (UTC),
@@ -670,17 +680,20 @@ def epoch_time_min_ago(minutes=5, *, utc='no'):
         utc         (yes/no): If unix epoch time in UTC timezone
                               default is no
     Example:
-    >>> epoch_time_min_ago()
+    >>> epoch_time_min_ago() # doctest: +SKIP
     1530325377
-    >>> epoch_time_min_ago(30)
+    >>> epoch_time_min_ago(30) # doctest: +SKIP
     1530323879
     """
+    if not isinstance(minutes, int):
+        raise TypeError("minutes must be int")
+
     return int(epoch_time_now(utc=utc) - (60 * minutes))
 
 
 def epoch_time_hours_ago(hours=1, *, utc='no'):
     """
-    Return current date and time with less x hours in unix epoch time format
+    Return current date and time with less x hours in unix epoch time format.
 
     Unix epoch time -  number of seconds that have elapsed since
                        00:00:00 Coordinated Universal Time (UTC),
@@ -694,17 +707,20 @@ def epoch_time_hours_ago(hours=1, *, utc='no'):
         utc       (yes/no): If unix epoch time in UTC timezone
                             default is no
     Example:
-    >>> epoch_time_hours_ago()
+    >>> epoch_time_hours_ago() # doctest: +SKIP
     1530322279
-    >>> epoch_time_hours_ago(8)
+    >>> epoch_time_hours_ago(8) # doctest: +SKIP
     1530297083
     """
+    if not isinstance(hours, int):
+        raise TypeError("hours must be int")
+
     return int(epoch_time_now(utc=utc) - (hours * 3600))
 
 
 def epoch_time_days_ago(days=1, *, utc='no'):
     """
-    Return current date and time with less x days in unix epoch time format
+    Return current date and time with less x days in unix epoch time format.
 
     Unix epoch time -  number of seconds that have elapsed since
                        00:00:00 Coordinated Universal Time (UTC),
@@ -712,29 +728,32 @@ def epoch_time_days_ago(days=1, *, utc='no'):
 
     Arguments (opt):
         days       (int):   Number of days ago to return unix timestamp
-                              default is 1 day
+                            default is 1 day
 
     Keyword arguments (opt):
         utc       (yes/no): If unix epoch time in UTC timezone
                             default is no
     Example:
-    >>> epoch_time_days_ago()
+    >>> epoch_time_days_ago() # doctest: +SKIP
     1530239517
-    >>> epoch_time_days_ago(7)
+    >>> epoch_time_days_ago(7) # doctest: +SKIP
     1529721118
     """
+    if not isinstance(days, int):
+        raise TypeError("days must be int")
+
     return int(epoch_time_now(utc=utc) - (days * 24 * 3600))
 
 
 ##############################################################################
 ##############################################################################
-## Date and Time conversion
+# Date and Time conversion
 ##############################################################################
 ##############################################################################
 
 def seconds_to_human(seconds, *, unit=None):
     """
-    Convert number in seconds to human format
+    Convert number in seconds to human format.
 
     Arguments:
         seconds   (int):                               Number of seconds
@@ -757,12 +776,21 @@ def seconds_to_human(seconds, *, unit=None):
     >>> seconds_to_human(5191272)
     '2 Months, 2 Hours, 1 Minutes, 12 Seconds'
     """
-    seconds_list = [("Years", 31536000), # 1 year = 365 days (60 * 60 * 24 * 365)
-                    ("Months", 2592000), # 1 month = 30 days (60 * 60 * 24 * 30)
-                    ("Days", 86400),     # 1 day    (60 * 60 * 24)
-                    ("Hours", 3600),     # 1 hour   (60 * 60)
-                    ("Minutes", 60),     # 1 minute (60)
-                    ("Seconds", 1)]      # 1 second
+    # 1 year = 365 days (60 * 60 * 24 * 365)
+    # 1 month = 30 days (60 * 60 * 24 * 30)
+    # 1 day    (60 * 60 * 24)
+    # 1 hour   (60 * 60)
+    # 1 minute (60)
+    # 1 second
+    seconds_list = [("Years", 31536000),
+                    ("Months", 2592000),
+                    ("Days", 86400),
+                    ("Hours", 3600),
+                    ("Minutes", 60),
+                    ("Seconds", 1)]
+
+    if not isinstance(seconds, int):
+        raise TypeError("seconds must be int")
 
     if seconds == 0:
         return "0 Seconds"
@@ -777,12 +805,12 @@ def seconds_to_human(seconds, *, unit=None):
             raise TypeError("error: seconds_to_human: unit is invalid")
         seconds_list = seconds_list[index:]
 
-    result = list()
-    for unit, unit_value_in_sec in seconds_list:
+    result = []
+    for unit_name, unit_value_in_sec in seconds_list:
         num_unit = seconds // unit_value_in_sec
         if num_unit:
             seconds -= num_unit * unit_value_in_sec
-            result.append("{} {}".format(num_unit, unit))
+            result.append("{} {}".format(num_unit, unit_name))
     return ", ".join(result)
 
 
@@ -802,14 +830,29 @@ def convert_datetime_to_tz(*, date, date_fmt,
         datetime object with the target timezone defined.
 
     Example:
-    >>> convert_datetime_to_tz(date='2019-04-26T10:38:05Z', date_fmt="%Y-%m-%dT%H:%M:%SZ")
-    datetime.datetime(2019, 4, 26, 7, 38, 5, tzinfo=<DstTzInfo 'America/Sao_Paulo' -03-1 day, 21:00:00 STD>)
+    # convert a date from utc to America/Sao_Paulo
+    >>> convert_datetime_to_tz(date='2019-04-26T10:38:05Z', # doctest: +SKIP
+                               date_fmt="%Y-%m-%dT%H:%M:%SZ")
+    datetime.datetime(2019, 4, 26, 7, 38, 5,
+                      tzinfo=<DstTzInfo 'America/Sao_Paulo' -03-1 day,
+                      21:00:00 STD>)
 
-    >>> convert_datetime_to_tz(date='2019-04-26T10:38:05Z', date_fmt="%Y-%m-%dT%H:%M:%SZ", from_tz="America/Sao_Paulo", to_tz="America/Los_Angeles")
-    datetime.datetime(2019, 4, 26, 6, 38, 5, tzinfo=<DstTzInfo 'America/Los_Angeles' PDT-1 day, 17:00:00 DST>)
+    # convert date from America/Sao_Paulo to America/Los_Angeles
+    >>> convert_datetime_to_tz(date='2019-04-26T10:38:05Z', # doctest: +SKIP
+                               date_fmt="%Y-%m-%dT%H:%M:%SZ",
+                               from_tz="America/Sao_Paulo",
+                               to_tz="America/Los_Angeles")
+    datetime.datetime(2019, 4, 26, 6, 38, 5, # doctest: +SKIP
+                      tzinfo=<DstTzInfo 'America/Los_Angeles' PDT-1 day,
+                      17:00:00 DST>)
 
-    >>> convert_datetime_to_tz(date='2019-04-26T10:38:05Z', date_fmt="%Y-%m-%dT%H:%M:%SZ", from_tz="America/Sao_Paulo", to_tz="Asia/Dubai")
-    datetime.datetime(2019, 4, 26, 17, 38, 5, tzinfo=<DstTzInfo 'Asia/Dubai' +04+4:00:00 STD>)
+    # Convert date from America/New_York to Asia/Dubai
+    >>> convert_datetime_to_tz(date='2019-04-26T10:38:05Z', # doctest: +SKIP
+                               date_fmt="%Y-%m-%dT%H:%M:%SZ",
+                               from_tz="America/New_York",
+                               to_tz="Asia/Dubai")
+    datetime.datetime(2019, 4, 26, 18, 38, 5,
+                      tzinfo=<DstTzInfo 'Asia/Dubai' +04+4:00:00 STD>)
     """
     # create datetime obj with date specified
     datetime_obj = datetime.datetime.strptime(date, date_fmt)
