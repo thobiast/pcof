@@ -388,7 +388,7 @@ def run_cmd(cmd):
     >>> run_cmd("echo test")
     (0, 'test\n')
     >>> run_cmd("cmd_does_not_exist") # doctest:+ELLIPSIS
-    (127, '...cmd_does_not_exist: command not found\n')
+    (127, '...cmd_does_not_exist:...not found\n')
     """
     process = subprocess.Popen(
         cmd,
