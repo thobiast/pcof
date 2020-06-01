@@ -61,6 +61,11 @@ pip install pcof
     | line1_col1 | line1_col2 |
     | line2_col1 | line2_col2 |
     +------------+------------+
+
+>>> pcof.checksum_file("tests/file_checksum.txt")
+'f133e784590eae8c07dac9295ae50344731090dbfc848c1d77d0af4a79a56f21'
+>>> pcof.checksum_file("tests/file_checksum.txt", algorithm='md5')
+'f978067032b567b197cef53a4d463a89'
 ```
 
 ## Documentation (automatically generated using pydoc)
