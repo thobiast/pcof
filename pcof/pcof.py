@@ -2,9 +2,7 @@
 """
 Python Collection Of Functions.
 
-This module has a collection of many small generic useful functions.
-
-Developed for Python 3
+Package with collection of small useful functions.
 """
 
 # Author: Thobias Salazar Trevisan
