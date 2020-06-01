@@ -1,0 +1,5 @@
+This sample file.
+
+It is used on function checksum_file.
+
+python!

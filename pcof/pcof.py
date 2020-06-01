@@ -11,6 +11,7 @@ Package with collection of small useful functions.
 
 import collections
 import datetime
+import hashlib
 import logging
 import smtplib
 import subprocess
@@ -129,7 +130,6 @@ def print_table(header, rows, *, sortby='', alignl='', alignr='', hrules=''):
 # Email
 ##############################################################################
 ##############################################################################
-
 
 def send_email(mail_from, mail_to, subject, body,
                mailserver='localhost'):  # pragma: no cover
@@ -860,5 +860,49 @@ def convert_datetime_to_tz(*, date, date_fmt,
     datetime_obj_to = datetime_obj_from.astimezone(pytz.timezone(to_tz))
 
     return datetime_obj_to
+
+
+##############################################################################
+##############################################################################
+# hash
+##############################################################################
+##############################################################################
+
+def checksum_file(filename, *, algorithm='sha256', block_size=1048576):
+    """
+    Return checksums (hash) of a file.
+
+    Arguments:
+        filename           (str): file to check hash
+
+    Keyword arguments (opt):
+        algorithm          (str): algorithm used to calculate hash.
+                                  default: sha256
+        block_size         (int): chunk size to read the file (bytes)
+
+    return:
+        hex-encoded string
+
+    Exemple:
+    >>> checksum_file("my_file") # doctest: +SKIP
+    '179b8c9510b2f068b94286c86610c6fe633ca44b5e541837ae9461bbdace7191'
+    >>> checksum_file("my_file", algorithm='md5') # doctest: +SKIP
+    'bdc28791ea81bafa7601e98f68b692e5'
+    """
+    try:
+        file_hash = getattr(hashlib, algorithm)()
+    except AttributeError:
+        raise TypeError("hash algorithm not supported")
+
+    if not isinstance(block_size, int):
+        raise TypeError("block_size should be int")
+
+    with open(filename, 'rb') as fd:
+        block = fd.read(block_size)
+        while block:
+            file_hash.update(block)
+            block = fd.read(block_size)
+
+    return file_hash.hexdigest()
 
 # vim: ts=4
