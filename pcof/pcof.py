@@ -868,7 +868,7 @@ def convert_datetime_to_tz(*, date, date_fmt,
 ##############################################################################
 ##############################################################################
 
-def checksum_file(filename, *, algorithm='sha256', block_size=1048576):
+def checksum_file(filename, *, algorithm="sha256", block_size=1048576):
     """
     Return checksums (hash) of a file.
 
@@ -886,7 +886,7 @@ def checksum_file(filename, *, algorithm='sha256', block_size=1048576):
     Exemple:
     >>> checksum_file("my_file") # doctest: +SKIP
     '179b8c9510b2f068b94286c86610c6fe633ca44b5e541837ae9461bbdace7191'
-    >>> checksum_file("my_file", algorithm='md5') # doctest: +SKIP
+    >>> checksum_file("my_file", algorithm="md5") # doctest: +SKIP
     'bdc28791ea81bafa7601e98f68b692e5'
     """
     try:
@@ -897,7 +897,7 @@ def checksum_file(filename, *, algorithm='sha256', block_size=1048576):
     if not isinstance(block_size, int):
         raise TypeError("block_size should be int")
 
-    with open(filename, 'rb') as fd:
+    with open(filename, "rb") as fd:
         block = fd.read(block_size)
         while block:
             file_hash.update(block)

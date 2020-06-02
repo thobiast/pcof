@@ -9,7 +9,7 @@ NAME = "pcof"
 DESCRIPTION = "Python Collection Of Functions."
 URL = "https://github.com/thobiast/pcof"
 AUTHOR = "Thobias Salazar Trevisan"
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 
 # Packages required
 REQUIRED = ["prettytable", "pytz"]
