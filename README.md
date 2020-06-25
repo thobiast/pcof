@@ -67,10 +67,54 @@ pip install pcof
 'f133e784590eae8c07dac9295ae50344731090dbfc848c1d77d0af4a79a56f21'
 >>> pcof.checksum_file("tests/file_checksum.txt", algorithm='md5')
 'f978067032b567b197cef53a4d463a89'
+
+>>> import time
+>>> from pcof import decorators
+>>> @decorators.time_elapsed(print_info=True)
+... def myfunc():
+...    time.sleep(1)
+...
+>>> myfunc()
+Decorator time_elapsed: myfunc args: () kwargs: {} -  elapsed time 1.0012 seconds. This function all execution elapsed time: 1.0012 seconds
+>>> myfunc()
+Decorator time_elapsed: myfunc args: () kwargs: {} -  elapsed time 1.0011 seconds. This function all execution elapsed time: 2.0023 seconds
 ```
 
-## Documentation (automatically generated using pydoc)
+## List of available functions
 
+### Functions
+
+| Name | Description |
+|:-----|:------------|
+| msg |  Print colored text. |
+| print_table |  Print table using module prettytable. |
+| send_email |  Send an email using smtplib module. |
+| setup_logging |  Configure logging. |
+| nested_dict |  Return a nested dictionary (arbitrary number of levels). |
+| find_key |  Return a value for a key in a dictionary. |
+| return_dict_value |  Return a value from a dictionary. |
+| run_cmd |  Execute a command on the operating system. |
+| bytes2human |  Convert number in bytes to human format. |
+| human2bytes |  Convert size from human to bytes. |
+| pct_two_numbers |  Calculate the percentage of number1 to number2. |
+| x_pct_of_number |  Calculate what is the x% of a number. |
+| epoch_time_to_human |  Convert a unix epoch time to human format. |
+| epoch_time_now |  Return current date and time in unix epoch time format. |
+| epoch_time_min_ago |  Return current date and time less x minutes in unix epoch time format. |
+| epoch_time_hours_ago |  Return current date and time with less x hours in unix epoch time format. |
+| epoch_time_days_ago |  Return current date and time with less x days in unix epoch time format. |
+| seconds_to_human |  Convert number in seconds to human format. |
+| convert_datetime_to_tz |  Convert a date to a specific timezone. |
+| checksum_file |  Return checksums (hash) of a file. |
+
+### Decorators
+
+| Name | Description |
+|:-----|:------------|
+| num_calls |  Count the number of times a function is called. |
+| time_elapsed |  Calculate elapsed time in seconds. |
+
+## Documentation (automatically generated using pydoc)
 
 ```
 Help on module pcof:
@@ -83,7 +127,6 @@ DESCRIPTION
 
 FUNCTIONS
 ```
-
 
 ```python
     bytes2human(size, *, unit='', precision=2, base=1024)
@@ -114,6 +157,26 @@ FUNCTIONS
         ('25.4', 'GB')
         >>> bytes2human(27273042329, unit='MB')
         ('26009.60', 'MB')
+
+    checksum_file(filename, *, algorithm='sha256', block_size=1048576)
+        Return checksums (hash) of a file.
+
+        Arguments:
+            filename           (str): file to check hash
+
+        Keyword arguments (opt):
+            algorithm          (str): algorithm used to calculate hash.
+                                      default: sha256
+            block_size         (int): chunk size to read the file (bytes)
+
+        return:
+            hex-encoded string
+
+        Exemple:
+        >>> checksum_file("my_file") # doctest: +SKIP
+        '179b8c9510b2f068b94286c86610c6fe633ca44b5e541837ae9461bbdace7191'
+        >>> checksum_file("my_file", algorithm="md5") # doctest: +SKIP
+        'bdc28791ea81bafa7601e98f68b692e5'
 
     convert_datetime_to_tz(*, date, date_fmt, from_tz='UTC', to_tz='America/Sao_Paulo')
         Convert a date to a specific timezone.
@@ -543,5 +606,57 @@ FUNCTIONS
         '81.8000'
         >>> x_pct_of_number(40.9, 200, precision=0)
         '82'
+
 ```
 
+```
+Help on module decorators:
+
+NAME
+    decorators - Python Collection Of Functions.
+
+DESCRIPTION
+    Package with collection of small useful functions.
+
+    pcof Decorators
+
+FUNCTIONS
+```
+
+```python
+    num_calls(_func=None, *, loglevel='DEBUG', print_info=False)
+        Count the number of times a function is called.
+
+        Decorator keyword arguments (optional):
+            loglevel          (str):  log level used to show the number of
+                                      calls information. (default DEBUG)
+            print_info (True/False):  print function number of call information
+                                      (default False)
+
+        Example:
+        @num_calls
+        def my_func():
+            print("my func")
+
+        @num_calls(print_info=True)
+        def my_other_func():
+            print("my other func")
+
+    time_elapsed(_func=None, *, loglevel='DEBUG', print_info=False)
+        Calculate elapsed time in seconds.
+
+        Decorator keyword arguments (optional):
+            loglevel          (str):  log level used to show elapsed time
+                                      (default DEBUG)
+            print_info (True/False):  print elapsed time (default False)
+
+        Example:
+        @time_elapsed
+        def my_func():
+            print("my func")
+
+        @time_elapsed(print_info=True)
+        def my_other_func():
+            print("my other func")
+
+```
