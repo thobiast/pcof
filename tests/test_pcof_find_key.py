@@ -4,6 +4,8 @@
 import pytest
 from pcof import pcof
 
+# Disable black. Better to see nested dict to test
+# fmt: off
 DICT_1 = {
           "A1": "A",
           "B1": "B",
@@ -20,6 +22,7 @@ DICT_1 = {
                   {"G2": "GG"}
                 ]
          }
+# fmt: on
 
 @pytest.mark.parametrize("key, result", [
     ("A1", ["A"]),
