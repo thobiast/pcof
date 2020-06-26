@@ -35,7 +35,8 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     install_requires=REQUIRED,
     packages=setuptools.find_packages(
-        exclude=(["tests", "*.tests", "*.tests.*", "tests.*"])),
+        exclude=(["tests", "*.tests", "*.tests.*", "tests.*"])
+    ),
     include_package_data=True,
     classifiers=[
         "License :: OSI Approved :: MIT License",
@@ -48,7 +49,7 @@ setuptools.setup(
         "Intended Audience :: System Administrators",
         "Operating System :: OS Independent",
         "Topic :: Software Development :: Libraries :: Python Modules",
-    ]
+    ],
 )
 
 # vim: ts=4

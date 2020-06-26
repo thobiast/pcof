@@ -7,22 +7,25 @@ from pcof import decorators
 
 
 def myfunc(*args, **kwargs):
-    return '{}; {}'.format(args, kwargs)
+    return "{}; {}".format(args, kwargs)
 
 
 def myfunc_two(*args, **kwargs):
     time.sleep(0.1)
-    return '{}; {}'.format(args, kwargs)
+    return "{}; {}".format(args, kwargs)
 
 
-@pytest.mark.parametrize("args, kwargs, result", [
-    ([], {}, "(); {}"),
-    ([1], {}, "(1,); {}"),
-    ([1, 2], {}, "(1, 2); {}"),
-    ([], {'opt1': 'test'}, "(); {'opt1': 'test'}"),
-    ([], {'opt1': 1, 'opt2': True}, "(); {'opt1': 1, 'opt2': True}"),
-    ([1, 2], {'opt1': 1, 'opt2': True}, "(1, 2); {'opt1': 1, 'opt2': True}"),
-])
+@pytest.mark.parametrize(
+    "args, kwargs, result",
+    [
+        ([], {}, "(); {}"),
+        ([1], {}, "(1,); {}"),
+        ([1, 2], {}, "(1, 2); {}"),
+        ([], {"opt1": "test"}, "(); {'opt1': 'test'}"),
+        ([], {"opt1": 1, "opt2": True}, "(); {'opt1': 1, 'opt2': True}"),
+        ([1, 2], {"opt1": 1, "opt2": True}, "(1, 2); {'opt1': 1, 'opt2': True}"),
+    ],
+)
 def test_time_elapsed_return(args, kwargs, result):
     """
     Test decorator does not change function behavior
@@ -91,5 +94,6 @@ def test_time_elapsed_parameters(capsys):
     out, err = capsys.readouterr()
     assert "Decorator time_elapsed: myfunc args: () kwargs: {} - elapsed time" in out
     assert "seconds\n" in out
+
 
 # vim: ts=4
