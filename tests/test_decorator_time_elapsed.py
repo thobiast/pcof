@@ -89,7 +89,7 @@ def test_time_elapsed_parameters(capsys):
     decorated_func = decorators.time_elapsed(print_info=True)(myfunc)
     decorated_func()
     out, err = capsys.readouterr()
-    assert "Decorator time_elapsed: myfunc args: () kwargs: {} -  elapsed time" in out
+    assert "Decorator time_elapsed: myfunc args: () kwargs: {} - elapsed time" in out
     assert "seconds\n" in out
 
 # vim: ts=4

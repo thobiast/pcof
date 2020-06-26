@@ -89,7 +89,7 @@ def time_elapsed(_func=None, *, loglevel="DEBUG", print_info=False):
             # keep track of total elapsed time for all execution of the function
             wrapped_f.elapsed += elapsed_time
 
-            output = "Decorator time_elapsed: {} args: {} kwargs: {} -  " \
+            output = "Decorator time_elapsed: {} args: {} kwargs: {} - " \
                      "elapsed time {:.4f} seconds. " \
                      "This function all execution elapsed time: {:.4f} " \
                      "seconds".format(
