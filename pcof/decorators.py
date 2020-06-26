@@ -37,13 +37,15 @@ def num_calls(_func=None, *, loglevel="DEBUG", print_info=False):
     def my_other_func():
         print("my other func")
     """
+
     def decorator_num_calls(func):
         @functools.wraps(func)
         def wrapped_f(*args, **kwargs):
             wrapped_f.numcalls += 1
 
             output = "Decorator num_calls: {} called {} times".format(
-                        func.__name__, wrapped_f.numcalls)
+                func.__name__, wrapped_f.numcalls
+            )
 
             getattr(LOG, loglevel.lower())(output)
             if print_info:
@@ -79,6 +81,7 @@ def time_elapsed(_func=None, *, loglevel="DEBUG", print_info=False):
     def my_other_func():
         print("my other func")
     """
+
     def decorator_time_elapsed(func):
         @functools.wraps(func)
         def wrapped_f(*args, **kwargs):
@@ -89,12 +92,14 @@ def time_elapsed(_func=None, *, loglevel="DEBUG", print_info=False):
             # keep track of total elapsed time for all execution of the function
             wrapped_f.elapsed += elapsed_time
 
-            output = "Decorator time_elapsed: {} args: {} kwargs: {} -  " \
-                     "elapsed time {:.4f} seconds. " \
-                     "This function all execution elapsed time: {:.4f} " \
-                     "seconds".format(
-                         func.__name__, args, kwargs,
-                         elapsed_time, wrapped_f.elapsed)
+            output = (
+                "Decorator time_elapsed: {} args: {} kwargs: {} - "
+                "elapsed time {:.4f} seconds. "
+                "This function all execution elapsed time: {:.4f} "
+                "seconds".format(
+                    func.__name__, args, kwargs, elapsed_time, wrapped_f.elapsed
+                )
+            )
 
             getattr(LOG, loglevel.lower())(output)
             if print_info:
@@ -110,5 +115,6 @@ def time_elapsed(_func=None, *, loglevel="DEBUG", print_info=False):
         return decorator_time_elapsed
     else:
         return decorator_time_elapsed(_func)
+
 
 # vim: ts=4

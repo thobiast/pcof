@@ -4,6 +4,8 @@
 import pytest
 from pcof import pcof
 
+# Disable black. Better to see nested dict to test
+# fmt: off
 DICT_1 = {
           "A1": "A",
           "B1": "B",
@@ -20,19 +22,25 @@ DICT_1 = {
                   {"G2": "GG"}
                 ]
          }
+# fmt: on
 
-@pytest.mark.parametrize("key, result", [
-    ("A1", ["A"]),
-    ("A2", ["AA"]),
-    ("C1", [{'A2': 'AA', 'B2': 'BB', 'C2': {'A3': 'AAA'}, 'D1': 'DD'}]),
-    ("C2", [{'A3': 'AAA'}]),
-    ("A3", ["AAA"]),
-    ("D1", ["DD", "D"]),
-    ("E1", [["E"]]),
-    ("F1", [["F", "FF"]]),
-    ("G2", ["G", "GG"]),
-])
+
+@pytest.mark.parametrize(
+    "key, result",
+    [
+        ("A1", ["A"]),
+        ("A2", ["AA"]),
+        ("C1", [{"A2": "AA", "B2": "BB", "C2": {"A3": "AAA"}, "D1": "DD"}]),
+        ("C2", [{"A3": "AAA"}]),
+        ("A3", ["AAA"]),
+        ("D1", ["DD", "D"]),
+        ("E1", [["E"]]),
+        ("F1", [["F", "FF"]]),
+        ("G2", ["G", "GG"]),
+    ],
+)
 def test_find_key(key, result):
     assert pcof.find_key(DICT_1, key) == result
+
 
 # vim: ts=4

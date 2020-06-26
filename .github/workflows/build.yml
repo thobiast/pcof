@@ -14,12 +14,14 @@ jobs:
           python-version: '3.x'
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
-      - name: install tox
-        run: pip install --upgrade tox
-      - name: run tox flake8
+      - name: Install tox
+        run: pip install --upgrade tox black
+      - name: Run tox flake8
         run: tox -e flake8
-      - name: run tox pylint
+      - name: Run tox pylint
         run: tox -e pylint
+      - name: Run tox black
+        run: tox -e black
   test:
     needs: lint
     runs-on: ubuntu-latest

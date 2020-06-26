@@ -28,7 +28,8 @@ import pytz
 ##############################################################################
 ##############################################################################
 
-def msg(color, msg_text, exitcode=0, *, end='\n'):
+
+def msg(color, msg_text, exitcode=0, *, end="\n"):
     """
     Print colored text.
 
@@ -50,19 +51,20 @@ def msg(color, msg_text, exitcode=0, *, end='\n'):
         msg("blue", "nice text in blue")
         msg("red", "Error in my script. terminating", 1)
     """
-    color_dic = {'blue': '\033[0;34m',
-                 'red': '\033[1;31m',
-                 'green': '\033[0;32m',
-                 'yellow': '\033[0;33m',
-                 'cyan': '\033[0;36m',
-                 'resetcolor': '\033[0m'}
+    color_dic = {
+        "blue": "\033[0;34m",
+        "red": "\033[1;31m",
+        "green": "\033[0;32m",
+        "yellow": "\033[0;33m",
+        "cyan": "\033[0;36m",
+        "resetcolor": "\033[0m",
+    }
 
-    if not color or color == 'nocolor':
+    if not color or color == "nocolor":
         print(msg_text, end=end)
     else:
         try:
-            print(color_dic[color] + msg_text + color_dic['resetcolor'],
-                  end=end)
+            print(color_dic[color] + msg_text + color_dic["resetcolor"], end=end)
         except KeyError as exc:
             raise ValueError("Invalid color") from exc
 
@@ -73,7 +75,7 @@ def msg(color, msg_text, exitcode=0, *, end='\n'):
         sys.exit(exitcode)
 
 
-def print_table(header, rows, *, sortby='', alignl='', alignr='', hrules=''):
+def print_table(header, rows, *, sortby="", alignl="", alignr="", hrules=""):
     """
     Print table using module prettytable.
 
@@ -118,9 +120,9 @@ def print_table(header, rows, *, sortby='', alignl='', alignr='', hrules=''):
         # sort by first column by default
         output.sortby = sortby if sortby in header else header[0]
     for left in alignl:
-        output.align[left] = 'l'
+        output.align[left] = "l"
     for right in alignr:
-        output.align[right] = 'r'
+        output.align[right] = "r"
 
     print(output)
 
@@ -131,8 +133,10 @@ def print_table(header, rows, *, sortby='', alignl='', alignr='', hrules=''):
 ##############################################################################
 ##############################################################################
 
-def send_email(mail_from, mail_to, subject, body,
-               mailserver='localhost'):  # pragma: no cover
+
+def send_email(
+    mail_from, mail_to, subject, body, mailserver="localhost"
+):  # pragma: no cover
     """
     Send an email using smtplib module.
 
@@ -148,7 +152,12 @@ To: %s
 Subject: %s
 
 %s
-""" % (mail_from, mail_to, subject, body)
+""" % (
+        mail_from,
+        mail_to,
+        subject,
+        body,
+    )
 
     # send the email
     try:
@@ -164,9 +173,10 @@ Subject: %s
 ##############################################################################
 ##############################################################################
 
+
 def setup_logging(
-        logfile=None, *,
-        filemode='a', date_format=None, log_level='DEBUG'):  # pragma: no cover
+    logfile=None, *, filemode="a", date_format=None, log_level="DEBUG"
+):  # pragma: no cover
     """
     Configure logging.
 
@@ -183,27 +193,31 @@ def setup_logging(
                            DEBUG, INFO, WARNING, ERROR or CRITICAL
                            default is DEBUG
     """
-    dict_level = {'DEBUG': logging.DEBUG,
-                  'INFO': logging.INFO,
-                  'WARNING': logging.WARNING,
-                  'ERROR': logging.ERROR,
-                  'CRITICAL': logging.CRITICAL}
+    dict_level = {
+        "DEBUG": logging.DEBUG,
+        "INFO": logging.INFO,
+        "WARNING": logging.WARNING,
+        "ERROR": logging.ERROR,
+        "CRITICAL": logging.CRITICAL,
+    }
 
     if log_level not in dict_level:
         raise ValueError("Invalid log_level")
-    if filemode not in ['a', 'w']:
+    if filemode not in ["a", "w"]:
         raise ValueError("Invalid filemode")
 
     if not date_format:
-        date_format = '%m/%d/%Y %H:%M:%S'
+        date_format = "%m/%d/%Y %H:%M:%S"
 
-    log_fmt = '%(asctime)s %(module)s %(funcName)s %(levelname)s %(message)s'
+    log_fmt = "%(asctime)s %(module)s %(funcName)s %(levelname)s %(message)s"
 
-    logging.basicConfig(level=dict_level[log_level],
-                        format=log_fmt,
-                        datefmt=date_format,
-                        filemode=filemode,
-                        filename=logfile)
+    logging.basicConfig(
+        level=dict_level[log_level],
+        format=log_fmt,
+        datefmt=date_format,
+        filemode=filemode,
+        filename=logfile,
+    )
 
     return logging.getLogger(__name__)
 
@@ -213,6 +227,7 @@ def setup_logging(
 # Dictionary
 ##############################################################################
 ##############################################################################
+
 
 def nested_dict():  # pragma: no cover
     """
@@ -292,8 +307,7 @@ def find_key(dict_obj, key):
     return results
 
 
-def return_dict_value(
-        dictionary, keys, *, ignore_key_error=False):  # pragma: no cover
+def return_dict_value(dictionary, keys, *, ignore_key_error=False):  # pragma: no cover
     """
     Return a value from a dictionary.
 
@@ -349,7 +363,7 @@ def return_dict_value(
             return return_dict_value(dictionary[keys[0]], keys[1:])
         except (KeyError, TypeError):
             if ignore_key_error:
-                return ''
+                return ""
             raise
     else:
         # It is the last key, try to return the dict value for the key
@@ -357,7 +371,7 @@ def return_dict_value(
             return dictionary[keys[0]]
         except (KeyError, TypeError):
             if ignore_key_error:
-                return ''
+                return ""
             raise
 
 
@@ -366,6 +380,7 @@ def return_dict_value(
 # Execute command
 ##############################################################################
 ##############################################################################
+
 
 def run_cmd(cmd):
     r"""
@@ -393,13 +408,14 @@ def run_cmd(cmd):
         shell=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        universal_newlines=True)
+        universal_newlines=True,
+    )
 
     # Poll process for new output until finished
     stdout_output = ""
     while True:
         nextline = process.stdout.readline()
-        if nextline == '' and process.poll() is not None:
+        if nextline == "" and process.poll() is not None:
             break
         # print lines to stdout
         # sys.stdout.write(nextline)
@@ -420,7 +436,8 @@ def run_cmd(cmd):
 ##############################################################################
 ##############################################################################
 
-def bytes2human(size, *, unit='', precision=2, base=1024):
+
+def bytes2human(size, *, unit="", precision=2, base=1024):
     """
     Convert number in bytes to human format.
 
@@ -460,22 +477,21 @@ def bytes2human(size, *, unit='', precision=2, base=1024):
     except ValueError:
         raise ValueError("value is not a number")
 
-    suffix = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB']
+    suffix = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB"]
 
     # If it needs to convert bytes to a specific unit
     if unit:
         try:
             num = num / base ** suffix.index(unit)
         except ValueError:
-            raise ValueError("Error: unit must be {}".format(
-                ", ".join(suffix[1:])))
+            raise ValueError("Error: unit must be {}".format(", ".join(suffix[1:])))
         return "{0:.{prec}f}".format(num, prec=precision), unit
 
     # Calculate the greatest unit for the that size
     for counter, suffix_unit in enumerate(suffix):
         if num < base:
             return "{0:.{prec}f}".format(num, prec=precision), suffix_unit
-        if counter == len(suffix)-1:
+        if counter == len(suffix) - 1:
             raise ValueError("value greater than the highest unit")
         num /= base
 
@@ -507,16 +523,19 @@ def human2bytes(size, unit, *, precision=2, base=1024):
         '11258999068426240.00'
 
     """
-    dic_power = {'KB': base,
-                 'MB': base ** 2,
-                 'GB': base ** 3,
-                 'TB': base ** 4,
-                 'PB': base ** 5,
-                 'EB': base ** 6,
-                 'ZB': base ** 7}
+    dic_power = {
+        "KB": base,
+        "MB": base ** 2,
+        "GB": base ** 3,
+        "TB": base ** 4,
+        "PB": base ** 5,
+        "EB": base ** 6,
+        "ZB": base ** 7,
+    }
     if unit not in dic_power:
-        raise ValueError("invalid unit. It must be {}".format(
-            ", ".join(dic_power.keys())))
+        raise ValueError(
+            "invalid unit. It must be {}".format(", ".join(dic_power.keys()))
+        )
 
     try:
         num_bytes = float(size) * int(dic_power[unit])
@@ -532,7 +551,8 @@ def human2bytes(size, unit, *, precision=2, base=1024):
 ##############################################################################
 ##############################################################################
 
-def pct_two_numbers(number1, number2, *, precision='2'):  # pragma: no cover
+
+def pct_two_numbers(number1, number2, *, precision="2"):  # pragma: no cover
     """
     Calculate the percentage of number1 to number2.
 
@@ -566,7 +586,7 @@ def pct_two_numbers(number1, number2, *, precision='2'):  # pragma: no cover
         return "{0:.{prec}f}".format(0, prec=precision)
 
 
-def x_pct_of_number(pct, number, *, precision='2'):  # pragma: no cover
+def x_pct_of_number(pct, number, *, precision="2"):  # pragma: no cover
     """
     Calculate what is the x% of a number.
 
@@ -603,8 +623,8 @@ def x_pct_of_number(pct, number, *, precision='2'):  # pragma: no cover
 ##############################################################################
 ##############################################################################
 
-def epoch_time_to_human(
-        epoch, *, date_format='%c', utc='no'):  # pragma: no cover
+
+def epoch_time_to_human(epoch, *, date_format="%c", utc="no"):  # pragma: no cover
     """
     Convert a unix epoch time to human format.
 
@@ -633,13 +653,13 @@ def epoch_time_to_human(
     if not isinstance(epoch, int):
         raise TypeError("epoch time must be int")
 
-    if utc == 'yes':
+    if utc == "yes":
         return datetime.datetime.utcfromtimestamp(epoch).strftime(date_format)
 
     return datetime.datetime.fromtimestamp(epoch).strftime(date_format)
 
 
-def epoch_time_now(*, utc='no'):
+def epoch_time_now(*, utc="no"):
     """
     Return current date and time in unix epoch time format.
 
@@ -654,15 +674,15 @@ def epoch_time_now(*, utc='no'):
     >>> epoch_time_now() # doctest: +SKIP
     1530325275
     """
-    if utc == 'yes':
+    if utc == "yes":
         return int(datetime.datetime.utcnow().timestamp())
-    elif utc == 'no':
+    elif utc == "no":
         return int(datetime.datetime.now().timestamp())
 
     raise ValueError("error: epoch_time_now: utc is invalid")
 
 
-def epoch_time_min_ago(minutes=5, *, utc='no'):
+def epoch_time_min_ago(minutes=5, *, utc="no"):
     """
     Return current date and time less x minutes in unix epoch time format.
 
@@ -689,7 +709,7 @@ def epoch_time_min_ago(minutes=5, *, utc='no'):
     return int(epoch_time_now(utc=utc) - (60 * minutes))
 
 
-def epoch_time_hours_ago(hours=1, *, utc='no'):
+def epoch_time_hours_ago(hours=1, *, utc="no"):
     """
     Return current date and time with less x hours in unix epoch time format.
 
@@ -716,7 +736,7 @@ def epoch_time_hours_ago(hours=1, *, utc='no'):
     return int(epoch_time_now(utc=utc) - (hours * 3600))
 
 
-def epoch_time_days_ago(days=1, *, utc='no'):
+def epoch_time_days_ago(days=1, *, utc="no"):
     """
     Return current date and time with less x days in unix epoch time format.
 
@@ -749,6 +769,7 @@ def epoch_time_days_ago(days=1, *, utc='no'):
 ##############################################################################
 ##############################################################################
 
+
 def seconds_to_human(seconds, *, unit=None):
     """
     Convert number in seconds to human format.
@@ -780,12 +801,14 @@ def seconds_to_human(seconds, *, unit=None):
     # 1 hour   (60 * 60)
     # 1 minute (60)
     # 1 second
-    seconds_list = [("Years", 31536000),
-                    ("Months", 2592000),
-                    ("Days", 86400),
-                    ("Hours", 3600),
-                    ("Minutes", 60),
-                    ("Seconds", 1)]
+    seconds_list = [
+        ("Years", 31536000),
+        ("Months", 2592000),
+        ("Days", 86400),
+        ("Hours", 3600),
+        ("Minutes", 60),
+        ("Seconds", 1),
+    ]
 
     if not isinstance(seconds, int):
         raise TypeError("seconds must be int")
@@ -793,8 +816,7 @@ def seconds_to_human(seconds, *, unit=None):
     if seconds == 0:
         return "0 Seconds"
     elif seconds < 0:
-        raise TypeError(
-            "error: seconds_to_human: seconds must be greater than 0")
+        raise TypeError("error: seconds_to_human: seconds must be greater than 0")
 
     if unit:
         try:
@@ -812,8 +834,7 @@ def seconds_to_human(seconds, *, unit=None):
     return ", ".join(result)
 
 
-def convert_datetime_to_tz(*, date, date_fmt,
-                           from_tz='UTC', to_tz='America/Sao_Paulo'):
+def convert_datetime_to_tz(*, date, date_fmt, from_tz="UTC", to_tz="America/Sao_Paulo"):
     """
     Convert a date to a specific timezone.
 
@@ -868,6 +889,7 @@ def convert_datetime_to_tz(*, date, date_fmt,
 ##############################################################################
 ##############################################################################
 
+
 def checksum_file(filename, *, algorithm="sha256", block_size=1048576):
     """
     Return checksums (hash) of a file.
@@ -904,5 +926,6 @@ def checksum_file(filename, *, algorithm="sha256", block_size=1048576):
             block = fd.read(block_size)
 
     return file_hash.hexdigest()
+
 
 # vim: ts=4

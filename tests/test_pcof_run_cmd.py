@@ -10,4 +10,5 @@ def test_run_cmd():
     assert pcof.run_cmd("ls > /dev/null") == (0, "")
     assert pcof.run_cmd("cmd_not_found test")[0] == 127
 
+
 # vim: ts=4

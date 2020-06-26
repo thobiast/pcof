@@ -6,21 +6,24 @@ from pcof import decorators
 
 
 def myfunc(*args, **kwargs):
-    return '{}; {}'.format(args, kwargs)
+    return "{}; {}".format(args, kwargs)
 
 
 def myfunc_two(*args, **kwargs):
-    return '{}; {}'.format(args, kwargs)
+    return "{}; {}".format(args, kwargs)
 
 
-@pytest.mark.parametrize("args, kwargs, result", [
-    ([], {}, "(); {}"),
-    ([1], {}, "(1,); {}"),
-    ([1, 2], {}, "(1, 2); {}"),
-    ([], {'opt1': 'test'}, "(); {'opt1': 'test'}"),
-    ([], {'opt1': 1, 'opt2': True}, "(); {'opt1': 1, 'opt2': True}"),
-    ([1, 2], {'opt1': 1, 'opt2': True}, "(1, 2); {'opt1': 1, 'opt2': True}"),
-])
+@pytest.mark.parametrize(
+    "args, kwargs, result",
+    [
+        ([], {}, "(); {}"),
+        ([1], {}, "(1,); {}"),
+        ([1, 2], {}, "(1, 2); {}"),
+        ([], {"opt1": "test"}, "(); {'opt1': 'test'}"),
+        ([], {"opt1": 1, "opt2": True}, "(); {'opt1': 1, 'opt2': True}"),
+        ([1, 2], {"opt1": 1, "opt2": True}, "(1, 2); {'opt1': 1, 'opt2': True}"),
+    ],
+)
 def test_num_calls_return(args, kwargs, result):
     """
     Test decorator does not change function behavior
@@ -98,5 +101,6 @@ def test_num_calls_parameters(capsys):
     decorated_func()
     out, err = capsys.readouterr()
     assert "myfunc called 2 times" in out
+
 
 # vim: ts=4

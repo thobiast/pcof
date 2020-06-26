@@ -6,10 +6,11 @@ from pcof import pcof
 
 header = ["col1", "col2", "mycol3"]
 rows = [
-        ["line1_col1", "line1_col2", "c_col3"],
-        ["line2_col1", "line2_col2", "b_col3"],
-        ["line3_col1", "line3_col2_test", "a_col3"],
-       ]
+    ["line1_col1", "line1_col2", "c_col3"],
+    ["line2_col1", "line2_col2", "b_col3"],
+    ["line3_col1", "line3_col2_test", "a_col3"],
+]
+
 
 def test_print_table(capsys):
     pcof.print_table(header, rows)
@@ -85,9 +86,9 @@ def test_print_table_sort(capsys):
 
 
 def test_msg_error():
-    row = [ ["col1", "col2" ] ]
-    with pytest.raises(ValueError,
-                       match="row does not have same size of header"):
+    row = [["col1", "col2"]]
+    with pytest.raises(ValueError, match="row does not have same size of header"):
         pcof.print_table(header, row)
+
 
 # vim: ts=4
