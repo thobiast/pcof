@@ -114,6 +114,7 @@ Decorator time_elapsed: myfunc args: () kwargs: {} -  elapsed time 1.0011 second
 |:-----|:------------|
 | num_calls |  Count the number of times a function is called. |
 | time_elapsed |  Calculate elapsed time in seconds. |
+| debug |  Show function parameters and return values. |
 
 ## Documentation (automatically generated using pydoc)
 
@@ -625,6 +626,25 @@ FUNCTIONS
 ```
 
 ```python
+    debug(_func=None, *, loglevel='DEBUG', print_info=False)
+        Show function parameters and return values.
+
+        Decorator keyword arguments (optional):
+            loglevel          (str):  log level used to show debug information.
+                                      (default DEBUG)
+            print_info (True/False):  print debug information.
+                                      (default False)
+
+        Example:
+        @debug
+        def my_func():
+            print("my func")
+            return True
+
+        @debug(print_info=True)
+        def my_other_func(my_param):
+            print("my other func")
+
     num_calls(_func=None, *, loglevel='DEBUG', print_info=False)
         Count the number of times a function is called.
 
