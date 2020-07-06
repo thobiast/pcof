@@ -117,4 +117,59 @@ def time_elapsed(_func=None, *, loglevel="DEBUG", print_info=False):
         return decorator_time_elapsed(_func)
 
 
+def debug(_func=None, *, loglevel="DEBUG", print_info=False):
+    """
+    Show function parameters and return values.
+
+    Decorator keyword arguments (optional):
+        loglevel          (str):  log level used to show debug information.
+                                  (default DEBUG)
+        print_info (True/False):  print debug information.
+                                  (default False)
+
+    Example:
+    @debug
+    def my_func():
+        print("my func")
+        return True
+
+    @debug(print_info=True)
+    def my_other_func(my_param):
+        print("my other func")
+    """
+
+    def decorator_debug(func):
+        @functools.wraps(func)
+        def wrapped_f(*args, **kwargs):
+            func_call = (
+                "Decorator debug: "
+                "Calling function: {} arguments: args: {}; kwargs: {}".format(
+                    func.__name__, args, kwargs
+                )
+            )
+
+            getattr(LOG, loglevel.lower())(func_call)
+            if print_info:
+                print(func_call)
+
+            result = func(*args, **kwargs)
+
+            func_return = "Decorator debug: function: {} returns: {}".format(
+                func.__name__, result
+            )
+            getattr(LOG, loglevel.lower())(func_return)
+            if print_info:
+                print(func_return)
+
+            return result
+
+        return wrapped_f
+
+    # wrapper to decorator, so it can be used with and without parameter
+    if _func is None:
+        return decorator_debug
+    else:
+        return decorator_debug(_func)
+
+
 # vim: ts=4
