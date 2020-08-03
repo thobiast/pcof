@@ -11,17 +11,11 @@ URL = "https://github.com/thobiast/pcof"
 AUTHOR = "Thobias Salazar Trevisan"
 VERSION = "0.1.2"
 
-# Packages required
-REQUIRED = ["prettytable", "pytz"]
-
 
 def read_file(fname):
     """Read file and return the its content."""
-    try:
-        with open(fname, "r") as f:
-            return f.read()
-    except IOError:
-        return DESCRIPTION
+    with open(fname, "r") as f:
+        return f.read()
 
 
 setuptools.setup(
@@ -33,7 +27,7 @@ setuptools.setup(
     license="MIT",
     long_description=read_file("README.md"),
     long_description_content_type="text/markdown",
-    install_requires=REQUIRED,
+    install_requires=read_file("requirements.txt").splitlines(),
     packages=setuptools.find_packages(
         exclude=(["tests", "*.tests", "*.tests.*", "tests.*"])
     ),
