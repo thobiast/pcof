@@ -172,4 +172,88 @@ def debug(_func=None, *, loglevel="DEBUG", print_info=False):
         return decorator_debug(_func)
 
 
+def retry_on_exception(
+    _func=None,
+    *,
+    exception=(Exception,),
+    loglevel="DEBUG",
+    max_retry=5,
+    sleep_retry=1,
+    exception_error=None
+):
+    """
+    Retry function execution if exception raises.
+
+    Decorator keyword arguments (optional):
+        exception            (tuple): Tuple with exceptions that decorator will retry
+                                      function's execution
+                                      (default any exception)
+        loglevel               (str): Log level used to show debug information.
+                                      (default DEBUG)
+        max_retry              (int): Max number of retries. -1 to retry forever
+                                      (default 5)
+        sleep_retry            (int): Time in seconds to wait between retries
+                                      (default 1)
+        exception_error  (exception): Exception that decorator will raise if
+                                      max_retry is reached without success
+                                      (default the same exception function raises)
+
+    Example:
+    # Retry function if any exception raise
+    @retry_on_exception
+    def my_func():
+        print("my func")
+        raise (TimeoutError)
+
+    # Retry only with exceptions: TimeoutErrorr, IndexError and Retry max of 10 times
+    @retry_on_exception(exception=(TimeoutError, IndexError), max_retry=10)
+    def my_other_func(my_param):
+        print("my other func")
+    """
+
+    def decorator_retry(func):
+        @functools.wraps(func)
+        def wrapped_f(*args, **kwargs):
+            current_retry = 1
+            log_prefix = "Decorator retry for function: {} -".format(func.__name__)
+
+            while True:
+                log_msg = "{} retry: {} of {}".format(
+                    log_prefix, current_retry, max_retry
+                )
+                getattr(LOG, loglevel.lower())(log_msg)
+
+                try:
+                    return func(*args, **kwargs)
+                except exception as error:
+                    log_msg = "{} exception catched: {}".format(log_prefix, repr(error))
+                    getattr(LOG, loglevel.lower())(log_msg)
+
+                    if max_retry != -1:
+                        current_retry += 1
+                        if current_retry > max_retry:
+                            log_msg = "{} max retry '{}' reached. Giving up".format(
+                                log_prefix, max_retry
+                            )
+                            getattr(LOG, loglevel.lower())(log_msg)
+                            if exception_error:
+                                raise exception_error("max retry reached")
+                            else:
+                                raise
+
+                    log_msg = "{} waiting: {}s for next retry".format(
+                        log_prefix, sleep_retry
+                    )
+                    getattr(LOG, loglevel.lower())(log_msg)
+                    time.sleep(sleep_retry)
+
+        return wrapped_f
+
+    # wrapper to decorator, so it can be used with and without parameter
+    if _func is None:
+        return decorator_retry
+    else:
+        return decorator_retry(_func)
+
+
 # vim: ts=4
