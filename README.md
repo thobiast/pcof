@@ -115,6 +115,7 @@ Decorator time_elapsed: myfunc args: () kwargs: {} -  elapsed time 1.0011 second
 | num_calls |  Count the number of times a function is called. |
 | time_elapsed |  Calculate elapsed time in seconds. |
 | debug |  Show function parameters and return values. |
+| retry_on_exception |  Retry function execution if exception raises. |
 
 ## Documentation (automatically generated using pydoc)
 
@@ -661,6 +662,35 @@ FUNCTIONS
 
         @num_calls(print_info=True)
         def my_other_func():
+            print("my other func")
+
+    retry_on_exception(_func=None, *, exception=(<class 'Exception'>,), loglevel='DEBUG', max_retry=5, sleep_retry=1, exception_error=None)
+        Retry function execution if exception raises.
+
+        Decorator keyword arguments (optional):
+            exception            (tuple): Tuple with exceptions that decorator will retry
+                                          function's execution
+                                          (default any exception)
+            loglevel               (str): Log level used to show debug information.
+                                          (default DEBUG)
+            max_retry              (int): Max number of retries. -1 to retry forever
+                                          (default 5)
+            sleep_retry            (int): Time in seconds to wait between retries
+                                          (default 1)
+            exception_error  (exception): Exception that decorator will raise if
+                                          max_retry is reached without success
+                                          (default the same exception function raises)
+
+        Example:
+        # Retry function if any exception raise
+        @retry_on_exception
+        def my_func():
+            print("my func")
+            raise (TimeoutError)
+
+        # Retry only with exceptions: TimeoutErrorr, IndexError and Retry max of 10 times
+        @retry_on_exception(exception=(TimeoutError, IndexError), max_retry=10)
+        def my_other_func(my_param):
             print("my other func")
 
     time_elapsed(_func=None, *, loglevel='DEBUG', print_info=False)
