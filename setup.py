@@ -9,7 +9,7 @@ NAME = "pcof"
 DESCRIPTION = "Python Collection Of Functions."
 URL = "https://github.com/thobiast/pcof"
 AUTHOR = "Thobias Salazar Trevisan"
-VERSION = "0.1.2"
+VERSION = "0.1.3"
 
 
 def read_file(fname):
