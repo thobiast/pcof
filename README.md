@@ -107,6 +107,7 @@ Decorator time_elapsed: myfunc args: () kwargs: {} -  elapsed time 1.0011 second
 | seconds_to_human |  Convert number in seconds to human format. |
 | convert_datetime_to_tz |  Convert a date to a specific timezone. |
 | checksum_file |  Return checksums (hash) of a file. |
+| download_file |  Download a file. |
 
 ### Decorators
 
@@ -218,6 +219,27 @@ FUNCTIONS
                                    to_tz="Asia/Dubai")
         datetime.datetime(2019, 4, 26, 18, 38, 5,
                           tzinfo=<DstTzInfo 'Asia/Dubai' +04+4:00:00 STD>)
+
+    download_file(url, local_file, *, allow_redirects=True, decode=True)
+        Download a file.
+
+        Arguments:
+            url                    (str): URL to download
+            local_file             (str): Local filename to store the downloaded
+                                          file
+
+        Keyword arguments (opt):
+            allow_redirects (True/False): Allow request to redirect url
+                                          default: True
+            decode          (True/False): Decode compressed responses like gzip
+                                          default: True
+
+        Return:
+            Request response headers
+
+        Exemple:
+        >>> download_file("http://google.com/favicon.ico", # doctest: +SKIP
+                          "/tmp/google.ico")
 
     epoch_time_days_ago(days=1, *, utc='no')
         Return current date and time with less x days in unix epoch time format.
