@@ -772,6 +772,68 @@ def epoch_time_days_ago(days=1, *, utc="no"):
 ##############################################################################
 
 
+def time_unit_conversion(
+    number, *, from_unit, to_unit, precision=0, days_month=30, days_year=365
+):
+    """
+    Convert number from a time unit to another time unit.
+
+    Arguments:
+        number       (int): Number to convert
+
+    Keyword arguments:
+        from_unit    (seconds/minutes/hours/days/weeks/months/years):
+                        unit to convert from
+        to_unit      (seconds/minutes/hours/days/weeks/months/years):
+                        unit to convert to
+
+    Keyword arguments (opt):
+        precision    (int): number of digits after the decimal point
+                        (default 0)
+        days_month   (int/float):  number of days in each month
+                        (default 30)
+        days_year    (int/float):  number of days in each year
+                        (default 365)
+
+    Return:
+        number converted to new unit
+
+    Example:
+    >>> time_unit_conversion(3600, from_unit="seconds", to_unit="hours")
+    '1'
+    >>> time_unit_conversion(1400, from_unit="minutes", to_unit="days")
+    '1'
+    >>> time_unit_conversion(36, from_unit="hours", to_unit="days", precision=1)
+    '1.5'
+    >>> time_unit_conversion(90, from_unit="days", to_unit="months")
+    '3'
+    """
+    in_seconds = {
+        "seconds": 1,
+        "minutes": 60,
+        "hours": 60 * 60,
+        "days": 60 * 60 * 24,
+        "weeks": 60 * 60 * 24 * 7,
+        "months": 60 * 60 * 24 * days_month,
+        "years": 60 * 60 * 24 * days_year,
+    }
+
+    if any(key not in in_seconds for key in (from_unit, to_unit)):
+        raise ValueError(
+            "Invalid unit. It must be {}".format(", ".join(in_seconds.keys()))
+        )
+
+    if not isinstance(number, int):
+        raise TypeError("number must be int")
+
+    # convert to seconds
+    sec = number * in_seconds[from_unit]
+    # convert seconds to unit
+    to_time = sec / in_seconds[to_unit]
+
+    return "{0:.{prec}f}".format(to_time, prec=precision)
+
+
 def seconds_to_human(seconds, *, unit=None):
     """
     Convert number in seconds to human format.
