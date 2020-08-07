@@ -3,20 +3,20 @@
 
 from unittest.mock import patch
 import pytest
-from pcof import pcof
+from pcof.downloadfile import download_file
 
 
-@patch("pcof.pcof.requests.get", autospect=True)
+@patch("pcof.downloadfile.requests.get", autospect=True)
 def test_download_file_raise(mock_get):
     mock_get.return_value.__enter__.return_value.status_code = 300
     with pytest.raises(RuntimeError, match=r"Failed downloading url.*"):
-        pcof.download_file("nourl", "nofile")
+        download_file("nourl", "nofile")
     mock_get.assert_called()
 
 
 @patch("builtins.open", autospec=True)
-@patch("pcof.pcof.shutil.copyfileobj", autospec=True)
-@patch("pcof.pcof.requests.get", autospect=True)
+@patch("pcof.downloadfile.shutil.copyfileobj", autospec=True)
+@patch("pcof.downloadfile.requests.get", autospect=True)
 def test_download_file(mock_get, mock_copyfileobj, mock_open):
     url = "http://url"
     local_file = "/tmp/some_localfile"
@@ -25,7 +25,7 @@ def test_download_file(mock_get, mock_copyfileobj, mock_open):
     mock_get.return_value.__enter__.return_value.status_code = 200
     mock_get.return_value.__enter__.return_value.headers = header
 
-    ret = pcof.download_file(url, local_file)
+    ret = download_file(url, local_file)
 
     assert ret == header
 

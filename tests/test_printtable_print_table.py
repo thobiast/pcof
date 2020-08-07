@@ -2,7 +2,7 @@
 """Test print_table function."""
 
 import pytest
-from pcof import pcof
+from pcof.printtable import print_table
 
 header = ["col1", "col2", "mycol3"]
 rows = [
@@ -13,7 +13,7 @@ rows = [
 
 
 def test_print_table(capsys):
-    pcof.print_table(header, rows)
+    print_table(header, rows)
     result = """\
 +------------+-----------------+--------+
 |    col1    |       col2      | mycol3 |
@@ -28,7 +28,7 @@ def test_print_table(capsys):
 
 
 def test_print_table_alignl(capsys):
-    pcof.print_table(header, rows, alignl=["col2"])
+    print_table(header, rows, alignl=["col2"])
     result = """\
 +------------+-----------------+--------+
 |    col1    | col2            | mycol3 |
@@ -43,7 +43,7 @@ def test_print_table_alignl(capsys):
 
 
 def test_print_table_alignr(capsys):
-    pcof.print_table(header, rows, alignr=["col2"])
+    print_table(header, rows, alignr=["col2"])
     result = """\
 +------------+-----------------+--------+
 |    col1    |            col2 | mycol3 |
@@ -58,7 +58,7 @@ def test_print_table_alignr(capsys):
 
 
 def test_print_table_hrules(capsys):
-    pcof.print_table(header, rows, hrules="HEADER")
+    print_table(header, rows, hrules="HEADER")
     result = """\
 |    col1    |       col2      | mycol3 |
 +------------+-----------------+--------+
@@ -71,7 +71,7 @@ def test_print_table_hrules(capsys):
 
 
 def test_print_table_sort(capsys):
-    pcof.print_table(header, rows, sortby="mycol3")
+    print_table(header, rows, sortby="mycol3")
     result = """\
 +------------+-----------------+--------+
 |    col1    |       col2      | mycol3 |
@@ -88,7 +88,7 @@ def test_print_table_sort(capsys):
 def test_msg_error():
     row = [["col1", "col2"]]
     with pytest.raises(ValueError, match="row does not have same size of header"):
-        pcof.print_table(header, row)
+        print_table(header, row)
 
 
 # vim: ts=4
