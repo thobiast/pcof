@@ -15,6 +15,14 @@ pcof is a collection of small useful functions.
 pip install pcof
 ```
 
+Most of the functions do not have any external dependencies.
+If your script does not use any pcof function with dependencies, then you can
+install pcof and ignore its dependencies.
+
+```bash
+pip install --no-deps pcof
+```
+
 ## Usage Example
 
 ```python
@@ -54,6 +62,9 @@ pip install pcof
 >>> pcof.seconds_to_human(8481083)
 '3 Months, 8 Days, 3 Hours, 51 Minutes, 23 Seconds'
 
+>>> pcof.time_unit_conversion(90, from_unit="days", to_unit="months")
+'3'
+
 >>> header = ["col1", "col2"]
 >>> rows = [ ["line1_col1", "line1_col2"], ["line2_col1", "line2_col2"] ]
 >>> pcof.print_table(header, rows)
@@ -79,44 +90,49 @@ pip install pcof
 Decorator time_elapsed: myfunc args: () kwargs: {} -  elapsed time 1.0012 seconds. This function all execution elapsed time: 1.0012 seconds
 >>> myfunc()
 Decorator time_elapsed: myfunc args: () kwargs: {} -  elapsed time 1.0011 seconds. This function all execution elapsed time: 2.0023 seconds
+
+>>> from pcof.downloadfile import download_file
+>>> download_file("http://google.com/favicon.ico", "/tmp/google.ico")
+
 ```
 
 ## List of available functions
 
 ### Functions
 
-| Name | Description |
-|:-----|:------------|
-| msg |  Print colored text. |
-| print_table |  Print table using module prettytable. |
-| send_email |  Send an email using smtplib module. |
-| setup_logging |  Configure logging. |
-| nested_dict |  Return a nested dictionary (arbitrary number of levels). |
-| find_key |  Return a value for a key in a dictionary. |
-| return_dict_value |  Return a value from a dictionary. |
-| run_cmd |  Execute a command on the operating system. |
-| bytes2human |  Convert number in bytes to human format. |
-| human2bytes |  Convert size from human to bytes. |
-| pct_two_numbers |  Calculate the percentage of number1 to number2. |
-| x_pct_of_number |  Calculate what is the x% of a number. |
-| epoch_time_to_human |  Convert a unix epoch time to human format. |
-| epoch_time_now |  Return current date and time in unix epoch time format. |
-| epoch_time_min_ago |  Return current date and time less x minutes in unix epoch time format. |
-| epoch_time_hours_ago |  Return current date and time with less x hours in unix epoch time format. |
-| epoch_time_days_ago |  Return current date and time with less x days in unix epoch time format. |
-| seconds_to_human |  Convert number in seconds to human format. |
-| convert_datetime_to_tz |  Convert a date to a specific timezone. |
-| checksum_file |  Return checksums (hash) of a file. |
-| download_file |  Download a file. |
+| Module | Name | Description | Dependencies |
+|:-------|:-----|:------------|:-------------|
+| pcof | msg |  Print colored text. | - |
+| pcof | send_email |  Send an email using smtplib module. | - |
+| pcof | setup_logging |  Configure logging. | - |
+| pcof | nested_dict |  Return a nested dictionary (arbitrary number of levels). | - |
+| pcof | find_key |  Return a value for a key in a dictionary. | - |
+| pcof | return_dict_value |  Return a value from a dictionary. | - |
+| pcof | run_cmd |  Execute a command on the operating system. | - |
+| pcof | bytes2human |  Convert number in bytes to human format. | - |
+| pcof | human2bytes |  Convert size from human to bytes. | - |
+| pcof | pct_two_numbers |  Calculate the percentage of number1 to number2. | - |
+| pcof | x_pct_of_number |  Calculate what is the x% of a number. | - |
+| pcof | epoch_time_to_human |  Convert a unix epoch time to human format. | - |
+| pcof | epoch_time_now |  Return current date and time in unix epoch time format. | - |
+| pcof | epoch_time_min_ago |  Return current date and time less x minutes in unix epoch time format. | - |
+| pcof | epoch_time_hours_ago |  Return current date and time with less x hours in unix epoch time format. | - |
+| pcof | epoch_time_days_ago |  Return current date and time with less x days in unix epoch time format. | - |
+| pcof | time_unit_conversion |  Convert number from a time unit to another time unit. | - |
+| pcof | seconds_to_human |  Convert number in seconds to human format. | - |
+| pcof | checksum_file |  Return checksums (hash) of a file. | - |
+| printtable | print_table |  Print table using module prettytable. | prettytable |
+| pytz | convert_datetime_to_tz |  Convert a date to a specific timezone. | pytz |
+| downloadfile | download_file |  Download a file. | requests |
 
 ### Decorators
 
-| Name | Description |
-|:-----|:------------|
-| num_calls |  Count the number of times a function is called. |
-| time_elapsed |  Calculate elapsed time in seconds. |
-| debug |  Show function parameters and return values. |
-| retry_on_exception |  Retry function execution if exception raises. |
+| Module | Name | Description | Dependencies |
+|:-------|:-----|:------------|:-------------|
+| decorators | num_calls |  Count the number of times a function is called. | - |
+| decorators | time_elapsed |  Calculate elapsed time in seconds. | - |
+| decorators | debug |  Show function parameters and return values. | - |
+| decorators | retry_on_exception |  Retry function execution if exception raises. | - |
 
 ## Documentation (automatically generated using pydoc)
 
@@ -181,65 +197,6 @@ FUNCTIONS
         '179b8c9510b2f068b94286c86610c6fe633ca44b5e541837ae9461bbdace7191'
         >>> checksum_file("my_file", algorithm="md5") # doctest: +SKIP
         'bdc28791ea81bafa7601e98f68b692e5'
-
-    convert_datetime_to_tz(*, date, date_fmt, from_tz='UTC', to_tz='America/Sao_Paulo')
-        Convert a date to a specific timezone.
-
-        Keyword arguments:
-
-            date      (str):      date to convert
-            date_fmt  (str):      format of the date to convert
-            from_tz   (timezone): source timezone name (default: UTC)
-            to_tz     (timezone): target timezone name (default: America/Sao_Paulo)
-
-        Returns:
-            datetime object with the target timezone defined.
-
-        Example:
-        # convert a date from utc to America/Sao_Paulo
-        >>> convert_datetime_to_tz(date='2019-04-26T10:38:05Z', # doctest: +SKIP
-                                   date_fmt="%Y-%m-%dT%H:%M:%SZ")
-        datetime.datetime(2019, 4, 26, 7, 38, 5,
-                          tzinfo=<DstTzInfo 'America/Sao_Paulo' -03-1 day,
-                          21:00:00 STD>)
-
-        # convert date from America/Sao_Paulo to America/Los_Angeles
-        >>> convert_datetime_to_tz(date='2019-04-26T10:38:05Z', # doctest: +SKIP
-                                   date_fmt="%Y-%m-%dT%H:%M:%SZ",
-                                   from_tz="America/Sao_Paulo",
-                                   to_tz="America/Los_Angeles")
-        datetime.datetime(2019, 4, 26, 6, 38, 5, # doctest: +SKIP
-                          tzinfo=<DstTzInfo 'America/Los_Angeles' PDT-1 day,
-                          17:00:00 DST>)
-
-        # Convert date from America/New_York to Asia/Dubai
-        >>> convert_datetime_to_tz(date='2019-04-26T10:38:05Z', # doctest: +SKIP
-                                   date_fmt="%Y-%m-%dT%H:%M:%SZ",
-                                   from_tz="America/New_York",
-                                   to_tz="Asia/Dubai")
-        datetime.datetime(2019, 4, 26, 18, 38, 5,
-                          tzinfo=<DstTzInfo 'Asia/Dubai' +04+4:00:00 STD>)
-
-    download_file(url, local_file, *, allow_redirects=True, decode=True)
-        Download a file.
-
-        Arguments:
-            url                    (str): URL to download
-            local_file             (str): Local filename to store the downloaded
-                                          file
-
-        Keyword arguments (opt):
-            allow_redirects (True/False): Allow request to redirect url
-                                          default: True
-            decode          (True/False): Decode compressed responses like gzip
-                                          default: True
-
-        Return:
-            Request response headers
-
-        Exemple:
-        >>> download_file("http://google.com/favicon.ico", # doctest: +SKIP
-                          "/tmp/google.ico")
 
     epoch_time_days_ago(days=1, *, utc='no')
         Return current date and time with less x days in unix epoch time format.
@@ -463,32 +420,6 @@ FUNCTIONS
         >>> pct_two_numbers(10, 50)
         '20.00'
 
-    print_table(header, rows, *, sortby='', alignl='', alignr='', hrules='')
-        Print table using module prettytable.
-
-        Arguments:
-            header     (list): List with table header
-            rows       (list): Nested list with table rows
-                               [ [row1], [row2], [row3], ... ]
-
-        Keyword arguments (optional):
-            sortby      (str): header name to sort the output
-            alignl     (list): headers name to align to left
-            alignr     (list): headers name to align to right
-            hrules      (str): Controls printing of horizontal rules after rows.
-                               Allowed values: FRAME, HEADER, ALL, NONE
-
-        Example:
-        >>> header = ["col1", "col2"]
-        >>> rows = [ ["line1_col1", "line1_col2"], ["line2_col1", "line2_col2"] ]
-        >>> print_table(header, rows)
-        +------------+------------+
-        |    col1    |    col2    |
-        +------------+------------+
-        | line1_col1 | line1_col2 |
-        | line2_col1 | line2_col2 |
-        +------------+------------+
-
     return_dict_value(dictionary, keys, *, ignore_key_error=False)
         Return a value from a dictionary.
 
@@ -606,6 +537,39 @@ FUNCTIONS
                                DEBUG, INFO, WARNING, ERROR or CRITICAL
                                default is DEBUG
 
+    time_unit_conversion(number, *, from_unit, to_unit, precision=0, days_month=30, days_year=365)
+        Convert number from a time unit to another time unit.
+
+        Arguments:
+            number       (int): Number to convert
+
+        Keyword arguments:
+            from_unit    (seconds/minutes/hours/days/weeks/months/years):
+                            unit to convert from
+            to_unit      (seconds/minutes/hours/days/weeks/months/years):
+                            unit to convert to
+
+        Keyword arguments (opt):
+            precision    (int): number of digits after the decimal point
+                            (default 0)
+            days_month   (int/float):  number of days in each month
+                            (default 30)
+            days_year    (int/float):  number of days in each year
+                            (default 365)
+
+        Return:
+            number converted to new unit
+
+        Example:
+        >>> time_unit_conversion(3600, from_unit="seconds", to_unit="hours")
+        '1'
+        >>> time_unit_conversion(1400, from_unit="minutes", to_unit="days")
+        '1'
+        >>> time_unit_conversion(36, from_unit="hours", to_unit="days", precision=1)
+        '1.5'
+        >>> time_unit_conversion(90, from_unit="days", to_unit="months")
+        '3'
+
     x_pct_of_number(pct, number, *, precision='2')
         Calculate what is the x% of a number.
 
@@ -633,6 +597,133 @@ FUNCTIONS
         '82'
 
 ```
+```
+Help on module printtable:
+
+NAME
+    printtable - Python Collection Of Functions.
+
+DESCRIPTION
+    Dependencies: prettytable
+
+FUNCTIONS
+```
+
+```python
+    print_table(header, rows, *, sortby='', alignl='', alignr='', hrules='')
+        Print table using module prettytable.
+
+        Arguments:
+            header     (list): List with table header
+            rows       (list): Nested list with table rows
+                               [ [row1], [row2], [row3], ... ]
+
+        Keyword arguments (optional):
+            sortby      (str): header name to sort the output
+            alignl     (list): headers name to align to left
+            alignr     (list): headers name to align to right
+            hrules      (str): Controls printing of horizontal rules after rows.
+                               Allowed values: FRAME, HEADER, ALL, NONE
+
+        Example:
+        >>> header = ["col1", "col2"]
+        >>> rows = [ ["line1_col1", "line1_col2"], ["line2_col1", "line2_col2"] ]
+        >>> print_table(header, rows)
+        +------------+------------+
+        |    col1    |    col2    |
+        +------------+------------+
+        | line1_col1 | line1_col2 |
+        | line2_col1 | line2_col2 |
+        +------------+------------+
+
+```
+```
+Help on module pytz:
+
+NAME
+    pytz - Python Collection Of Functions.
+
+DESCRIPTION
+    Dependencies: pytz
+
+FUNCTIONS
+```
+
+```python
+    convert_datetime_to_tz(*, date, date_fmt, from_tz='UTC', to_tz='America/Sao_Paulo')
+        Convert a date to a specific timezone.
+
+        Keyword arguments:
+
+            date      (str):      date to convert
+            date_fmt  (str):      format of the date to convert
+            from_tz   (timezone): source timezone name (default: UTC)
+            to_tz     (timezone): target timezone name (default: America/Sao_Paulo)
+
+        Returns:
+            datetime object with the target timezone defined.
+
+        Example:
+        # convert a date from utc to America/Sao_Paulo
+        >>> convert_datetime_to_tz(date='2019-04-26T10:38:05Z', # doctest: +SKIP
+                                   date_fmt="%Y-%m-%dT%H:%M:%SZ")
+        datetime.datetime(2019, 4, 26, 7, 38, 5,
+                          tzinfo=<DstTzInfo 'America/Sao_Paulo' -03-1 day,
+                          21:00:00 STD>)
+
+        # convert date from America/Sao_Paulo to America/Los_Angeles
+        >>> convert_datetime_to_tz(date='2019-04-26T10:38:05Z', # doctest: +SKIP
+                                   date_fmt="%Y-%m-%dT%H:%M:%SZ",
+                                   from_tz="America/Sao_Paulo",
+                                   to_tz="America/Los_Angeles")
+        datetime.datetime(2019, 4, 26, 6, 38, 5, # doctest: +SKIP
+                          tzinfo=<DstTzInfo 'America/Los_Angeles' PDT-1 day,
+                          17:00:00 DST>)
+
+        # Convert date from America/New_York to Asia/Dubai
+        >>> convert_datetime_to_tz(date='2019-04-26T10:38:05Z', # doctest: +SKIP
+                                   date_fmt="%Y-%m-%dT%H:%M:%SZ",
+                                   from_tz="America/New_York",
+                                   to_tz="Asia/Dubai")
+        datetime.datetime(2019, 4, 26, 18, 38, 5,
+                          tzinfo=<DstTzInfo 'Asia/Dubai' +04+4:00:00 STD>)
+
+```
+```
+Help on module downloadfile:
+
+NAME
+    downloadfile - Python Collection Of Functions.
+
+DESCRIPTION
+    Dependencies: requests
+
+FUNCTIONS
+```
+
+```python
+    download_file(url, local_file, *, allow_redirects=True, decode=True)
+        Download a file.
+
+        Arguments:
+            url                    (str): URL to download
+            local_file             (str): Local filename to store the downloaded
+                                          file
+
+        Keyword arguments (opt):
+            allow_redirects (True/False): Allow request to redirect url
+                                          default: True
+            decode          (True/False): Decode compressed responses like gzip
+                                          default: True
+
+        Return:
+            Request response headers
+
+        Exemple:
+        >>> download_file("http://google.com/favicon.ico", # doctest: +SKIP
+                          "/tmp/google.ico")
+
+```
 
 ```
 Help on module decorators:
@@ -643,7 +734,7 @@ NAME
 DESCRIPTION
     Package with collection of small useful functions.
 
-    pcof Decorators
+    Decorators functions
 
 FUNCTIONS
 ```

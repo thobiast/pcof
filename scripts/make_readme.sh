@@ -2,12 +2,47 @@
 # Script to generate README.md file
 set -e -u -o pipefail
 
-func_def_table=$(cat ../pcof/pcof.py |
-    sed -n '/^def/{:a;/    [r]\?""" *$/!{N;ba;};N;s/\n//g;s/  */ /g;p;}' |
-    sed 's/^def \([^(]*\).*"""\(.*\)/| \1 | \2 |/')
-func_dec_table=$(cat ../pcof/decorators.py |
-    sed -n '/^def/{:a;/    [r]\?""" *$/!{N;ba;};N;s/\n//g;s/  */ /g;p;}' |
-    sed 's/^def \([^(]*\).*"""\(.*\)/| \1 | \2 |/')
+FMT_TABLE='
+# check if there are dependencies and store it on hold space
+/^Dependencies/ {
+    s/.*://
+    h
+}
+/^def/ {
+    :a
+    /    [r]\?""" *$/ !{
+        N
+        b a
+    }
+    N
+    s/\n//g
+    s/  */ /g
+    s/^def \([^(]*\).*"""\(.*\)/| \1 | \2 |/
+    G
+    s/|\n$/| - |/ # there is no dependency
+    s/\(.*\)|\n\(.*\)/\1|\2 |/ # there is dependency
+    p
+}
+'
+
+FUNC_FILES="../pcof/pcof.py
+../pcof/printtable.py
+../pcof/pytz.py
+../pcof/downloadfile.py"
+FUNC_DECOR_FILES="../pcof/decorators.py"
+
+# create markdown tables
+func_def_table=$(
+for i in $FUNC_FILES;do
+    f="$(echo ${i##*/} | sed 's/.py$//')"
+    sed -n "$FMT_TABLE" "$i" | sed "s/^/| $f /";
+done)
+
+func_dec_table=$(
+for i in $FUNC_DECOR_FILES; do
+    f="$(echo ${i##*/} | sed 's/.py$//')"
+    sed -n "$FMT_TABLE" "$i" | sed "s/^/| $f /";
+done)
 
 # add ```python to pydoc output
 sed_pydoc="
@@ -31,20 +66,20 @@ $(cat example.md)
 
 ### Functions
 
-| Name | Description |
-|:-----|:------------|
+| Module | Name | Description | Dependencies |
+|:-------|:-----|:------------|:-------------|
 $func_def_table
 
 ### Decorators
 
-| Name | Description |
-|:-----|:------------|
+| Module | Name | Description | Dependencies |
+|:-------|:-----|:------------|:-------------|
 $func_dec_table
 
 ## Documentation (automatically generated using pydoc)
 
-$(pydoc ../pcof/pcof.py       | sed "$sed_pydoc")
+$(for i in $FUNC_FILES; do pydoc "$i" | sed "$sed_pydoc"; done)
 
-$(pydoc ../pcof/decorators.py | sed "$sed_pydoc")
+$(for i in $FUNC_DECOR_FILES; do pydoc "$i" | sed "$sed_pydoc"; done)
 \
 EOF

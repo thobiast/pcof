@@ -2,7 +2,9 @@
 """
 Python Collection Of Functions.
 
-This function depends on requests package
+Package with collection of small useful functions.
+
+Dependencies: requests
 """
 
 import shutil

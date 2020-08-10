@@ -14,3 +14,11 @@ pcof is a collection of small useful functions.
 ```bash
 pip install pcof
 ```
+
+Most of the functions do not have any external dependencies.
+If your script does not use any pcof function with dependencies, then you can
+install pcof and ignore its dependencies.
+
+```bash
+pip install --no-deps pcof
+```

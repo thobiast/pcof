@@ -2,7 +2,9 @@
 """
 Python Collection Of Functions.
 
-This function depends on pytz package
+Package with collection of small useful functions.
+
+Dependencies: pytz
 """
 
 

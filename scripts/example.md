@@ -35,6 +35,9 @@
 >>> pcof.seconds_to_human(8481083)
 '3 Months, 8 Days, 3 Hours, 51 Minutes, 23 Seconds'
 
+>>> pcof.time_unit_conversion(90, from_unit="days", to_unit="months")
+'3'
+
 >>> header = ["col1", "col2"]
 >>> rows = [ ["line1_col1", "line1_col2"], ["line2_col1", "line2_col2"] ]
 >>> pcof.print_table(header, rows)
@@ -60,5 +63,9 @@
 Decorator time_elapsed: myfunc args: () kwargs: {} -  elapsed time 1.0012 seconds. This function all execution elapsed time: 1.0012 seconds
 >>> myfunc()
 Decorator time_elapsed: myfunc args: () kwargs: {} -  elapsed time 1.0011 seconds. This function all execution elapsed time: 2.0023 seconds
+
+>>> from pcof.downloadfile import download_file
+>>> download_file("http://google.com/favicon.ico", "/tmp/google.ico")
+
 ```
 
