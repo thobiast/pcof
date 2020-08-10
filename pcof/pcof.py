@@ -22,23 +22,25 @@ import sys
 ##############################################################################
 
 
-def msg(color, msg_text, exitcode=0, *, end="\n"):
+def msg(color, msg_text, exitcode=0, *, end="\n", flush=True, output=None):
     """
     Print colored text.
 
     Arguments:
-        size           (str): color name (blue, red, green, yellow,
+        color          (str): color name (blue, red, green, yellow,
                               cyan or nocolor)
-
         msg_text       (str): text to be printed
-
         exitcode  (int, opt): Optional parameter. If exitcode is different
                               from zero, it terminates the script, i.e,
                               it calls sys.exit with the exitcode informed
 
     Keyword arguments (optional):
-        end            (str): string appended after the last value,
+        end            (str): string appended after the last char in "msg_text"
                               default a newline
+        flush   (True/False): whether to forcibly flush the stream.
+                              default True
+        output      (stream): a file-like object (stream).
+                              default sys.stdout
 
     Example:
         msg("blue", "nice text in blue")
@@ -53,16 +55,20 @@ def msg(color, msg_text, exitcode=0, *, end="\n"):
         "resetcolor": "\033[0m",
     }
 
-    if not color or color == "nocolor":
-        print(msg_text, end=end)
-    else:
-        try:
-            print(color_dic[color] + msg_text + color_dic["resetcolor"], end=end)
-        except KeyError as exc:
-            raise ValueError("Invalid color") from exc
+    if not output:
+        output = sys.stdout
 
-    # flush stdout
-    sys.stdout.flush()
+    if not color or color == "nocolor":
+        print(msg_text, end=end, file=output, flush=flush)
+    else:
+        if color not in color_dic:
+            raise ValueError("Invalid color")
+        print(
+            "{}{}{}".format(color_dic[color], msg_text, color_dic["resetcolor"]),
+            end=end,
+            file=output,
+            flush=flush,
+        )
 
     if exitcode:
         sys.exit(exitcode)

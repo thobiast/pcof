@@ -347,22 +347,24 @@ FUNCTIONS
             >>> human2bytes(10, 'PB')
             '11258999068426240.00'
 
-    msg(color, msg_text, exitcode=0, *, end='\n')
+    msg(color, msg_text, exitcode=0, *, end='\n', flush=True, output=None)
         Print colored text.
 
         Arguments:
-            size           (str): color name (blue, red, green, yellow,
+            color          (str): color name (blue, red, green, yellow,
                                   cyan or nocolor)
-
             msg_text       (str): text to be printed
-
             exitcode  (int, opt): Optional parameter. If exitcode is different
                                   from zero, it terminates the script, i.e,
                                   it calls sys.exit with the exitcode informed
 
         Keyword arguments (optional):
-            end            (str): string appended after the last value,
+            end            (str): string appended after the last char in "msg_text"
                                   default a newline
+            flush   (True/False): whether to forcibly flush the stream.
+                                  default True
+            output      (stream): a file-like object (stream).
+                                  default sys.stdout
 
         Example:
             msg("blue", "nice text in blue")
@@ -604,6 +606,8 @@ NAME
     printtable - Python Collection Of Functions.
 
 DESCRIPTION
+    Package with collection of small useful functions.
+
     Dependencies: prettytable
 
 FUNCTIONS
@@ -644,6 +648,8 @@ NAME
     pytz - Python Collection Of Functions.
 
 DESCRIPTION
+    Package with collection of small useful functions.
+
     Dependencies: pytz
 
 FUNCTIONS
@@ -696,6 +702,8 @@ NAME
     downloadfile - Python Collection Of Functions.
 
 DESCRIPTION
+    Package with collection of small useful functions.
+
     Dependencies: requests
 
 FUNCTIONS
