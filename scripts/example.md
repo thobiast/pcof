@@ -1,43 +1,48 @@
 ```python
->>> from pcof import pcof
+>>> from pcof import bytesconv
 
->>> pcof.bytes2human(88191837473)
+>>> bytesconv.bytes2human(88191837473)
 ('82.14', 'GB')
->>> pcof.bytes2human(88191837473, unit='MB')
+>>> bytesconv.bytes2human(88191837473, unit='MB')
 ('84106.29', 'MB')
->>> pcof.bytes2human(88191837473, unit='MB', precision=0)
+>>> bytesconv.bytes2human(88191837473, unit='MB', precision=0)
 ('84106', 'MB')
 
->>> pcof.human2bytes(100, 'GB')
+>>> bytesconv.human2bytes(100, 'GB')
 '107374182400.00'
 
->>> pcof.epoch_time_now()
+>>> from pcof import datetimefunc
+
+>>> datetimefunc.epoch_time_now()
 1591041372
->>> pcof.epoch_time_min_ago(60)
+>>> datetimefunc.epoch_time_min_ago(60)
 1591037781
->>> pcof.epoch_time_hours_ago(12)
+>>> datetimefunc.epoch_time_hours_ago(12)
 1590998197
->>> pcof.epoch_time_days_ago(30)
+>>> datetimefunc.epoch_time_days_ago(30)
 1588449403
 
->>> pcof.epoch_time_to_human(1590175926)
+>>> datetimefunc.epoch_time_to_human(1590175926)
 'Fri May 22 16:32:06 2020'
->>> pcof.epoch_time_to_human(1590175926, utc='yes', date_format='%m/%d/%Y %H:%M:%S')
+>>> datetimefunc.epoch_time_to_human(1590175926, utc='yes', date_format='%m/%d/%Y %H:%M:%S')
 '05/22/2020 19:32:06'
 
->>> pcof.x_pct_of_number(40, 200) # 40% of 200
-'80.00'
-
->>> pcof.seconds_to_human(300)
+>>> datetimefunc.seconds_to_human(300)
 '5 Minutes'
->>> pcof.seconds_to_human(310)
+>>> datetimefunc.seconds_to_human(310)
 '5 Minutes, 10 Seconds'
->>> pcof.seconds_to_human(8481083)
+>>> datetimefunc.seconds_to_human(8481083)
 '3 Months, 8 Days, 3 Hours, 51 Minutes, 23 Seconds'
 
->>> pcof.time_unit_conversion(90, from_unit="days", to_unit="months")
+>>> datetimefunc.time_unit_conversion(90, from_unit="days", to_unit="months")
 '3'
 
+
+>>> from pcof.pct import x_pct_of_number
+>>> x_pct_of_number(40, 200) # 40% of 200
+'80.00'
+
+>>> from pcof import printtable
 >>> header = ["col1", "col2"]
 >>> rows = [ ["line1_col1", "line1_col2"], ["line2_col1", "line2_col2"] ]
 >>> pcof.print_table(header, rows)
@@ -48,9 +53,10 @@
     | line2_col1 | line2_col2 |
     +------------+------------+
 
->>> pcof.checksum_file("tests/file_checksum.txt")
+>>> from pcof import misc
+>>> misc.checksum_file("tests/file_checksum.txt")
 'f133e784590eae8c07dac9295ae50344731090dbfc848c1d77d0af4a79a56f21'
->>> pcof.checksum_file("tests/file_checksum.txt", algorithm='md5')
+>>> misc.checksum_file("tests/file_checksum.txt", algorithm='md5')
 'f978067032b567b197cef53a4d463a89'
 
 >>> import time
@@ -66,6 +72,5 @@ Decorator time_elapsed: myfunc args: () kwargs: {} -  elapsed time 1.0011 second
 
 >>> from pcof.downloadfile import download_file
 >>> download_file("http://google.com/favicon.ico", "/tmp/google.ico")
-
 ```
 

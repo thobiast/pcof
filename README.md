@@ -26,45 +26,50 @@ pip install --no-deps pcof
 ## Usage Example
 
 ```python
->>> from pcof import pcof
+>>> from pcof import bytesconv
 
->>> pcof.bytes2human(88191837473)
+>>> bytesconv.bytes2human(88191837473)
 ('82.14', 'GB')
->>> pcof.bytes2human(88191837473, unit='MB')
+>>> bytesconv.bytes2human(88191837473, unit='MB')
 ('84106.29', 'MB')
->>> pcof.bytes2human(88191837473, unit='MB', precision=0)
+>>> bytesconv.bytes2human(88191837473, unit='MB', precision=0)
 ('84106', 'MB')
 
->>> pcof.human2bytes(100, 'GB')
+>>> bytesconv.human2bytes(100, 'GB')
 '107374182400.00'
 
->>> pcof.epoch_time_now()
+>>> from pcof import datetimefunc
+
+>>> datetimefunc.epoch_time_now()
 1591041372
->>> pcof.epoch_time_min_ago(60)
+>>> datetimefunc.epoch_time_min_ago(60)
 1591037781
->>> pcof.epoch_time_hours_ago(12)
+>>> datetimefunc.epoch_time_hours_ago(12)
 1590998197
->>> pcof.epoch_time_days_ago(30)
+>>> datetimefunc.epoch_time_days_ago(30)
 1588449403
 
->>> pcof.epoch_time_to_human(1590175926)
+>>> datetimefunc.epoch_time_to_human(1590175926)
 'Fri May 22 16:32:06 2020'
->>> pcof.epoch_time_to_human(1590175926, utc='yes', date_format='%m/%d/%Y %H:%M:%S')
+>>> datetimefunc.epoch_time_to_human(1590175926, utc='yes', date_format='%m/%d/%Y %H:%M:%S')
 '05/22/2020 19:32:06'
 
->>> pcof.x_pct_of_number(40, 200) # 40% of 200
-'80.00'
-
->>> pcof.seconds_to_human(300)
+>>> datetimefunc.seconds_to_human(300)
 '5 Minutes'
->>> pcof.seconds_to_human(310)
+>>> datetimefunc.seconds_to_human(310)
 '5 Minutes, 10 Seconds'
->>> pcof.seconds_to_human(8481083)
+>>> datetimefunc.seconds_to_human(8481083)
 '3 Months, 8 Days, 3 Hours, 51 Minutes, 23 Seconds'
 
->>> pcof.time_unit_conversion(90, from_unit="days", to_unit="months")
+>>> datetimefunc.time_unit_conversion(90, from_unit="days", to_unit="months")
 '3'
 
+
+>>> from pcof.pct import x_pct_of_number
+>>> x_pct_of_number(40, 200) # 40% of 200
+'80.00'
+
+>>> from pcof import printtable
 >>> header = ["col1", "col2"]
 >>> rows = [ ["line1_col1", "line1_col2"], ["line2_col1", "line2_col2"] ]
 >>> pcof.print_table(header, rows)
@@ -75,9 +80,10 @@ pip install --no-deps pcof
     | line2_col1 | line2_col2 |
     +------------+------------+
 
->>> pcof.checksum_file("tests/file_checksum.txt")
+>>> from pcof import misc
+>>> misc.checksum_file("tests/file_checksum.txt")
 'f133e784590eae8c07dac9295ae50344731090dbfc848c1d77d0af4a79a56f21'
->>> pcof.checksum_file("tests/file_checksum.txt", algorithm='md5')
+>>> misc.checksum_file("tests/file_checksum.txt", algorithm='md5')
 'f978067032b567b197cef53a4d463a89'
 
 >>> import time
@@ -93,7 +99,6 @@ Decorator time_elapsed: myfunc args: () kwargs: {} -  elapsed time 1.0011 second
 
 >>> from pcof.downloadfile import download_file
 >>> download_file("http://google.com/favicon.ico", "/tmp/google.ico")
-
 ```
 
 ## List of available functions
@@ -102,25 +107,26 @@ Decorator time_elapsed: myfunc args: () kwargs: {} -  elapsed time 1.0011 second
 
 | Module | Name | Description | Dependencies |
 |:-------|:-----|:------------|:-------------|
-| pcof | msg |  Print colored text. | - |
-| pcof | send_email |  Send an email using smtplib module. | - |
-| pcof | setup_logging |  Configure logging. | - |
-| pcof | nested_dict |  Return a nested dictionary (arbitrary number of levels). | - |
-| pcof | find_key |  Return a value for a key in a dictionary. | - |
-| pcof | return_dict_value |  Return a value from a dictionary. | - |
-| pcof | run_cmd |  Execute a command on the operating system. | - |
-| pcof | bytes2human |  Convert number in bytes to human format. | - |
-| pcof | human2bytes |  Convert size from human to bytes. | - |
-| pcof | pct_two_numbers |  Calculate the percentage of number1 to number2. | - |
-| pcof | x_pct_of_number |  Calculate what is the x% of a number. | - |
-| pcof | epoch_time_to_human |  Convert a unix epoch time to human format. | - |
-| pcof | epoch_time_now |  Return current date and time in unix epoch time format. | - |
-| pcof | epoch_time_min_ago |  Return current date and time less x minutes in unix epoch time format. | - |
-| pcof | epoch_time_hours_ago |  Return current date and time with less x hours in unix epoch time format. | - |
-| pcof | epoch_time_days_ago |  Return current date and time with less x days in unix epoch time format. | - |
-| pcof | time_unit_conversion |  Convert number from a time unit to another time unit. | - |
-| pcof | seconds_to_human |  Convert number in seconds to human format. | - |
-| pcof | checksum_file |  Return checksums (hash) of a file. | - |
+| misc | msg |  Print colored text. | - |
+| misc | send_email |  Send an email using smtplib module. | - |
+| misc | setup_logging |  Configure logging. | - |
+| misc | nested_dict |  Return a nested dictionary (arbitrary number of levels). | - |
+| misc | find_key |  Return a value for a key in a dictionary. | - |
+| misc | return_dict_value |  Return a value from a dictionary. | - |
+| misc | run_cmd |  Execute a command on the operating system. | - |
+| misc | checksum_file |  Return checksums (hash) of a file. | - |
+| bytesconv | bytes2human |  Convert number in bytes to human format. | - |
+| bytesconv | human2bytes |  Convert size from human to bytes. | - |
+| datetimefunc | epoch_time_to_human |  Convert a unix epoch time to human format. | - |
+| datetimefunc | epoch_time_now |  Return current date and time in unix epoch time format. | - |
+| datetimefunc | epoch_time_min_ago |  Return current date and time less x minutes in unix epoch time format. | - |
+| datetimefunc | epoch_time_hours_ago |  Return current date and time with less x hours in unix epoch time format. | - |
+| datetimefunc | epoch_time_days_ago |  Return current date and time with less x days in unix epoch time format. | - |
+| datetimefunc | time_unit_conversion |  Convert number from a time unit to another time unit. | - |
+| datetimefunc | seconds_to_human |  Convert number in seconds to human format. | - |
+| pct | y_what_pct_of_x |  Calculate the percentage of number1 to number2. | - |
+| pct | x_pct_of_number |  Calculate what is the x% of a number. | - |
+| pct | pct_change_from_x_to_y |  Calculate percent increase/decrease from number1 to number2. | - |
 | printtable | print_table |  Print table using module prettytable. | prettytable |
 | pytz | convert_datetime_to_tz |  Convert a date to a specific timezone. | pytz |
 | downloadfile | download_file |  Download a file. | requests |
@@ -137,13 +143,218 @@ Decorator time_elapsed: myfunc args: () kwargs: {} -  elapsed time 1.0011 second
 ## Documentation (automatically generated using pydoc)
 
 ```
-Help on module pcof:
+Help on module misc:
 
 NAME
-    pcof - Python Collection Of Functions.
+    misc - Python Collection Of Functions.
 
 DESCRIPTION
     Package with collection of small useful functions.
+
+    Miscellaneous functions
+
+FUNCTIONS
+```
+
+```python
+    checksum_file(filename, *, algorithm='sha256', block_size=1048576)
+        Return checksums (hash) of a file.
+
+        Arguments:
+            filename           (str): file to check hash
+
+        Keyword arguments (opt):
+            algorithm          (str): algorithm used to calculate hash.
+                                      default: sha256
+            block_size         (int): chunk size to read the file (bytes)
+
+        return:
+            hex-encoded string
+
+        Exemple:
+        >>> checksum_file("my_file") # doctest: +SKIP
+        '179b8c9510b2f068b94286c86610c6fe633ca44b5e541837ae9461bbdace7191'
+        >>> checksum_file("my_file", algorithm="md5") # doctest: +SKIP
+        'bdc28791ea81bafa7601e98f68b692e5'
+
+    find_key(dict_obj, key)
+        Return a value for a key in a dictionary.
+
+        Function to loop over a dictionary and search for an specific key
+        It supports nested dictionary
+
+        Arguments:
+            dict_obj    (obj): A list or a dictionary
+            key         (str): dictionary key
+
+        Return:
+            (list)           : a list with values that matches the key
+
+        Example:
+        >>> x = {"A1": "A", "B1": { "A2": "AA"} }
+        >>> find_key(x, "A1")
+        ['A']
+        >>> find_key(x, "A2")
+        ['AA']
+        >>> find_key(x, "YY")
+        []
+        >>> x = {"A1": "A", "B1": { "A1": "AA"} }
+        >>> find_key(x, "A1")
+        ['A', 'AA']
+
+    msg(color, msg_text, exitcode=0, *, end='\n', flush=True, output=None)
+        Print colored text.
+
+        Arguments:
+            color          (str): color name (blue, red, green, yellow,
+                                  cyan or nocolor)
+            msg_text       (str): text to be printed
+            exitcode  (int, opt): Optional parameter. If exitcode is different
+                                  from zero, it terminates the script, i.e,
+                                  it calls sys.exit with the exitcode informed
+
+        Keyword arguments (optional):
+            end            (str): string appended after the last char in "msg_text"
+                                  default a newline
+            flush   (True/False): whether to forcibly flush the stream.
+                                  default True
+            output      (stream): a file-like object (stream).
+                                  default sys.stdout
+
+        Example:
+            msg("blue", "nice text in blue")
+            msg("red", "Error in my script. terminating", 1)
+
+    nested_dict()
+        Return a nested dictionary (arbitrary number of levels).
+
+        Example:
+        >>> mydict = nested_dict()
+        >>> mydict['a1']['b1']['c1'] = 'test_1'
+        >>> mydict['a1']['b2'] = 'test_2'
+        >>> mydict['a1']['b3'] = 'test_3'
+        >>> mydict.keys()
+        dict_keys(['a1'])
+        >>> mydict['a1'].keys()
+        dict_keys(['b1', 'b2', 'b3'])
+        >>> mydict['a1']['b1'].keys()
+        dict_keys(['c1'])
+        >>> mydict['a1']['b1']['c1']
+        'test_1'
+        >>> mydict['a1']['b2']
+        'test_2'
+        >>> print(mydict) # doctest: +SKIP
+        defaultdict(<function nested_dict at 0x7f0239f4aee0>,
+            {'a1': defaultdict(<function nested_dict at 0x7f0239f4aee0>,
+            {'b1': defaultdict(<function nested_dict at 0x7f0239f4aee0>,
+                {'c1': 'test_1'}),
+            'b2': 'test_2',
+            'b3': 'test_3'})})
+
+    return_dict_value(dictionary, keys, *, ignore_key_error=False)
+        Return a value from a dictionary.
+
+        Recursively iterate over a dictionary and return value
+        for the key. Key must be a list. Each element of the list refers
+        to the level of the dicionary
+
+        It helps to reduce number of code lines when we need to perform may
+        try: except: to catch KeyErrors
+
+        Arguments:
+           dictionary              (dict): Dictionary
+           keys                    (list): List with key(s)
+           ignore_key_error  (True/False): Ignore key not found errors:
+                                             True  - return '' if key not found
+                                             False - raise exception
+                                           default: False
+
+        Example:
+        >>> mydic = { 'a': 'value_a',
+        ...           'b': {
+        ...                  'b1': 'value_b1',
+        ...                  'b2': 'value_b2'
+        ...                },
+        ...           'c': {
+        ...                  'c1': {
+        ...                          'c11': 'value_c11',
+        ...                          'c12': 'value_c12'
+        ...                         }
+        ...                },
+        ...          }
+        >>> return_dict_value(mydic, ['a'])
+        'value_a'
+        >>> return_dict_value(mydic, ['b'])
+        {'b1': 'value_b1', 'b2': 'value_b2'}
+        >>> return_dict_value(mydic, ['b', 'b1'])
+        'value_b1'
+        >>> return_dict_value(mydic, ['c', 'c1', 'c12'])
+        'value_c12'
+        >>> return_dict_value(mydic, ['c', 'c1', 'c13'])
+        Traceback (most recent call last):
+        ...
+        KeyError: 'c13'
+        >>> return_dict_value(mydic, ['c', 'c1', 'c13'], ignore_key_error=True)
+        ''
+        >>> return_dict_value(mydic, ['x'], ignore_key_error=True)
+        ''
+
+    run_cmd(cmd)
+        Execute a command on the operating system.
+
+        Arguments:
+            cmd    (str): the command to be executed
+
+        Return:
+            - If command complete with return code zero
+            return: command_return_code, stdout
+
+            - If command completes with return code different from zero
+            return: command_return_code, stderr
+
+
+        Example:
+        >>> run_cmd("echo test")
+        (0, 'test\n')
+        >>> run_cmd("cmd_does_not_exist") # doctest:+ELLIPSIS
+        (127, '...cmd_does_not_exist:...not found\n')
+
+    send_email(mail_from, mail_to, subject, body, mailserver='localhost')
+        Send an email using smtplib module.
+
+        Arguments:
+            mail_from        (str): send email from this address
+            mail_to          (str): send email to this address
+            subject          (str): mail subject
+            mail_server (str, opt): mail server address. Default is localhost
+
+    setup_logging(logfile=None, *, filemode='a', date_format=None, log_level='DEBUG')
+        Configure logging.
+
+        Arguments (opt):
+            logfile     (str): log file to write the log messages
+                                   If not specified, it shows log messages
+                                   on screen (stderr)
+        Keyword arguments (opt):
+            filemode    (a/w): a - log messages are appended to the file (default)
+                               w - log messages overwrite the file
+            date_format (str): date format in strftime format
+                               default is %m/%d/%Y %H:%M:%S
+            log_level   (str): specifies the lowest-severity log message
+                               DEBUG, INFO, WARNING, ERROR or CRITICAL
+                               default is DEBUG
+
+```
+```
+Help on module bytesconv:
+
+NAME
+    bytesconv - Python Collection Of Functions.
+
+DESCRIPTION
+    Package with collection of small useful functions.
+
+    Bytes calculator
 
 FUNCTIONS
 ```
@@ -178,26 +389,47 @@ FUNCTIONS
         >>> bytes2human(27273042329, unit='MB')
         ('26009.60', 'MB')
 
-    checksum_file(filename, *, algorithm='sha256', block_size=1048576)
-        Return checksums (hash) of a file.
+    human2bytes(size, unit, *, precision=2, base=1024)
+        Convert size from human to bytes.
 
         Arguments:
-            filename           (str): file to check hash
+            size       (int): number
+            unit       (str): converts from this unit to bytes
+                              'KB', 'MB', 'GB', 'TB', 'PB', 'EB'
 
         Keyword arguments (opt):
-            algorithm          (str): algorithm used to calculate hash.
-                                      default: sha256
-            block_size         (int): chunk size to read the file (bytes)
+            precision  (int): number of digits after the decimal point
+                              default is 2
+            base       (int): 1000 - for decimal base
+                              1024 - for binary base (it is the default)
 
-        return:
-            hex-encoded string
+        Returns:
+            (int) number in bytes
 
-        Exemple:
-        >>> checksum_file("my_file") # doctest: +SKIP
-        '179b8c9510b2f068b94286c86610c6fe633ca44b5e541837ae9461bbdace7191'
-        >>> checksum_file("my_file", algorithm="md5") # doctest: +SKIP
-        'bdc28791ea81bafa7601e98f68b692e5'
+        Example:
+            >>> human2bytes(10, 'GB')
+            '10737418240.00'
+            >>> human2bytes(10, 'GB', precision=0)
+            '10737418240'
+            >>> human2bytes(10, 'PB')
+            '11258999068426240.00'
 
+```
+```
+Help on module datetimefunc:
+
+NAME
+    datetimefunc - Python Collection Of Functions.
+
+DESCRIPTION
+    Package with collection of small useful functions.
+
+    Date and time functions
+
+FUNCTIONS
+```
+
+```python
     epoch_time_days_ago(days=1, *, utc='no')
         Return current date and time with less x days in unix epoch time format.
 
@@ -297,199 +529,6 @@ FUNCTIONS
         >>> epoch_time_to_human(1530324373, utc='yes') # doctest: +SKIP
         'Sat Jun 30 02:06:13 2018'
 
-    find_key(dict_obj, key)
-        Return a value for a key in a dictionary.
-
-        Function to loop over a dictionary and search for an specific key
-        It supports nested dictionary
-
-        Arguments:
-            dict_obj    (obj): A list or a dictionary
-            key         (str): dictionary key
-
-        Return:
-            (list)           : a list with values that matches the key
-
-        Example:
-        >>> x = {"A1": "A", "B1": { "A2": "AA"} }
-        >>> find_key(x, "A1")
-        ['A']
-        >>> find_key(x, "A2")
-        ['AA']
-        >>> find_key(x, "YY")
-        []
-        >>> x = {"A1": "A", "B1": { "A1": "AA"} }
-        >>> find_key(x, "A1")
-        ['A', 'AA']
-
-    human2bytes(size, unit, *, precision=2, base=1024)
-        Convert size from human to bytes.
-
-        Arguments:
-            size       (int): number
-            unit       (str): converts from this unit to bytes
-                              'KB', 'MB', 'GB', 'TB', 'PB', 'EB'
-
-        Keyword arguments (opt):
-            precision  (int): number of digits after the decimal point
-                              default is 2
-            base       (int): 1000 - for decimal base
-                              1024 - for binary base (it is the default)
-
-        Returns:
-            (int) number in bytes
-
-        Example:
-            >>> human2bytes(10, 'GB')
-            '10737418240.00'
-            >>> human2bytes(10, 'GB', precision=0)
-            '10737418240'
-            >>> human2bytes(10, 'PB')
-            '11258999068426240.00'
-
-    msg(color, msg_text, exitcode=0, *, end='\n', flush=True, output=None)
-        Print colored text.
-
-        Arguments:
-            color          (str): color name (blue, red, green, yellow,
-                                  cyan or nocolor)
-            msg_text       (str): text to be printed
-            exitcode  (int, opt): Optional parameter. If exitcode is different
-                                  from zero, it terminates the script, i.e,
-                                  it calls sys.exit with the exitcode informed
-
-        Keyword arguments (optional):
-            end            (str): string appended after the last char in "msg_text"
-                                  default a newline
-            flush   (True/False): whether to forcibly flush the stream.
-                                  default True
-            output      (stream): a file-like object (stream).
-                                  default sys.stdout
-
-        Example:
-            msg("blue", "nice text in blue")
-            msg("red", "Error in my script. terminating", 1)
-
-    nested_dict()
-        Return a nested dictionary (arbitrary number of levels).
-
-        Example:
-        >>> mydict = nested_dict()
-        >>> mydict['a1']['b1']['c1'] = 'test_1'
-        >>> mydict['a1']['b2'] = 'test_2'
-        >>> mydict['a1']['b3'] = 'test_3'
-        >>> mydict.keys()
-        dict_keys(['a1'])
-        >>> mydict['a1'].keys()
-        dict_keys(['b1', 'b2', 'b3'])
-        >>> mydict['a1']['b1'].keys()
-        dict_keys(['c1'])
-        >>> mydict['a1']['b1']['c1']
-        'test_1'
-        >>> mydict['a1']['b2']
-        'test_2'
-        >>> print(mydict) # doctest: +SKIP
-        defaultdict(<function nested_dict at 0x7f0239f4aee0>,
-            {'a1': defaultdict(<function nested_dict at 0x7f0239f4aee0>,
-            {'b1': defaultdict(<function nested_dict at 0x7f0239f4aee0>,
-                {'c1': 'test_1'}),
-            'b2': 'test_2',
-            'b3': 'test_3'})})
-
-    pct_two_numbers(number1, number2, *, precision='2')
-        Calculate the percentage of number1 to number2.
-
-        Number1 is what percent of number2
-
-        Arguments:
-            number1     (int): number
-            number2     (int): number
-
-        Keyword arguments (opt):
-            precision   (int): number of digits after the decimal point
-                               default is 2
-
-        Returns:
-            (str):  Pct value
-
-        Example:
-        >>> pct_two_numbers(30, 90)
-        '33.33'
-        >>> pct_two_numbers(30, 90, precision=0)
-        '33'
-        >>> pct_two_numbers(30, 90, precision=4)
-        '33.3333'
-        >>> pct_two_numbers(10, 50)
-        '20.00'
-
-    return_dict_value(dictionary, keys, *, ignore_key_error=False)
-        Return a value from a dictionary.
-
-        Recursively iterate over a dictionary and return value
-        for the key. Key must be a list. Each element of the list refers
-        to the level of the dicionary
-
-        It helps to reduce number of code lines when we need to perform may
-        try: except: to catch KeyErrors
-
-        Arguments:
-           dictionary              (dict): Dictionary
-           keys                    (list): List with key(s)
-           ignore_key_error  (True/False): Ignore key not found errors:
-                                             True  - return '' if key not found
-                                             False - raise exception
-                                           default: False
-
-        Example:
-        >>> mydic = { 'a': 'value_a',
-        ...           'b': {
-        ...                  'b1': 'value_b1',
-        ...                  'b2': 'value_b2'
-        ...                },
-        ...           'c': {
-        ...                  'c1': {
-        ...                          'c11': 'value_c11',
-        ...                          'c12': 'value_c12'
-        ...                         }
-        ...                },
-        ...          }
-        >>> return_dict_value(mydic, ['a'])
-        'value_a'
-        >>> return_dict_value(mydic, ['b'])
-        {'b1': 'value_b1', 'b2': 'value_b2'}
-        >>> return_dict_value(mydic, ['b', 'b1'])
-        'value_b1'
-        >>> return_dict_value(mydic, ['c', 'c1', 'c12'])
-        'value_c12'
-        >>> return_dict_value(mydic, ['c', 'c1', 'c13'])
-        Traceback (most recent call last):
-        ...
-        KeyError: 'c13'
-        >>> return_dict_value(mydic, ['c', 'c1', 'c13'], ignore_key_error=True)
-        ''
-        >>> return_dict_value(mydic, ['x'], ignore_key_error=True)
-        ''
-
-    run_cmd(cmd)
-        Execute a command on the operating system.
-
-        Arguments:
-            cmd    (str): the command to be executed
-
-        Return:
-            - If command complete with return code zero
-            return: command_return_code, stdout
-
-            - If command completes with return code different from zero
-            return: command_return_code, stderr
-
-
-        Example:
-        >>> run_cmd("echo test")
-        (0, 'test\n')
-        >>> run_cmd("cmd_does_not_exist") # doctest:+ELLIPSIS
-        (127, '...cmd_does_not_exist:...not found\n')
-
     seconds_to_human(seconds, *, unit=None)
         Convert number in seconds to human format.
 
@@ -513,31 +552,6 @@ FUNCTIONS
         '2 Days, 2 Hours, 1 Minutes, 12 Seconds'
         >>> seconds_to_human(5191272)
         '2 Months, 2 Hours, 1 Minutes, 12 Seconds'
-
-    send_email(mail_from, mail_to, subject, body, mailserver='localhost')
-        Send an email using smtplib module.
-
-        Arguments:
-            mail_from        (str): send email from this address
-            mail_to          (str): send email to this address
-            subject          (str): mail subject
-            mail_server (str, opt): mail server address. Default is localhost
-
-    setup_logging(logfile=None, *, filemode='a', date_format=None, log_level='DEBUG')
-        Configure logging.
-
-        Arguments (opt):
-            logfile     (str): log file to write the log messages
-                                   If not specified, it shows log messages
-                                   on screen (stderr)
-        Keyword arguments (opt):
-            filemode    (a/w): a - log messages are appended to the file (default)
-                               w - log messages overwrite the file
-            date_format (str): date format in strftime format
-                               default is %m/%d/%Y %H:%M:%S
-            log_level   (str): specifies the lowest-severity log message
-                               DEBUG, INFO, WARNING, ERROR or CRITICAL
-                               default is DEBUG
 
     time_unit_conversion(number, *, from_unit, to_unit, precision=0, days_month=30, days_year=365)
         Convert number from a time unit to another time unit.
@@ -572,6 +586,44 @@ FUNCTIONS
         >>> time_unit_conversion(90, from_unit="days", to_unit="months")
         '3'
 
+```
+```
+Help on module pct:
+
+NAME
+    pct - Python Collection Of Functions.
+
+DESCRIPTION
+    Package with collection of small useful functions.
+
+    Percentage Calculator
+
+FUNCTIONS
+```
+
+```python
+    pct_change_from_x_to_y(number1, number2, *, precision='2')
+        Calculate percent increase/decrease from number1 to number2.
+
+        Arguments:
+            number1    (int): start value (from)
+            number2    (int): end value (to)
+
+        Keyword arguments (opt):
+            precision  (int): number of digits after the decimal point
+                              default is 2
+
+        Returns:
+            (str):  number
+
+        Example:
+        >>> pct_change_from_x_to_y(100, 110)  # what is the pct increase from 100 to 110?
+        '10.00%'
+        >>> pct_change_from_x_to_y(100, 90)   # what is the pct from 100 to 90?
+        '-10.00%'
+        >>> pct_change_from_x_to_y(25, 50, precision=0)
+        '100%'
+
     x_pct_of_number(pct, number, *, precision='2')
         Calculate what is the x% of a number.
 
@@ -587,16 +639,42 @@ FUNCTIONS
             (str):  number
 
         Exemple:
-        >>> x_pct_of_number(33.333, 90)     # what is 33.333% of 90
+        >>> x_pct_of_number(33.333, 90)     # what is 33.333% of 90?
         '30.00'
-        >>> x_pct_of_number(40, 200)        # what is 40% of 200
+        >>> x_pct_of_number(40, 200)        # what is 40% of 200?
         '80.00'
-        >>> x_pct_of_number(40.9, 200)      # what is 40.9% of 200
+        >>> x_pct_of_number(40.9, 200)      # what is 40.9% of 200?
         '81.80'
         >>> x_pct_of_number(40.9, 200, precision=4)
         '81.8000'
         >>> x_pct_of_number(40.9, 200, precision=0)
         '82'
+
+    y_what_pct_of_x(number1, number2, *, precision='2')
+        Calculate the percentage of number1 to number2.
+
+        Number1 is what percent of number2.
+
+        Arguments:
+            number1     (int): number
+            number2     (int): number
+
+        Keyword arguments (opt):
+            precision   (int): number of digits after the decimal point
+                               default is 2
+
+        Returns:
+            (str):  Pct value
+
+        Example:
+        >>> y_what_pct_of_x(30, 90)    # 30 is what percent of 90?
+        '33.33%'
+        >>> y_what_pct_of_x(30, 90, precision=0)
+        '33%'
+        >>> y_what_pct_of_x(30, 90, precision=4)
+        '33.3333%'
+        >>> y_what_pct_of_x(10, 50, precision=0) # 10 is what percent of 50?
+        '20%'
 
 ```
 ```

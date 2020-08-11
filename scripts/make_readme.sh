@@ -25,7 +25,10 @@ FMT_TABLE='
 }
 '
 
-FUNC_FILES="../pcof/pcof.py
+FUNC_FILES="../pcof/misc.py
+../pcof/bytesconv.py
+../pcof/datetimefunc.py
+../pcof/pct.py
 ../pcof/printtable.py
 ../pcof/pytz.py
 ../pcof/downloadfile.py"
