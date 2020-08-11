@@ -19,8 +19,8 @@ def convert_datetime_to_tz(*, date, date_fmt, from_tz="UTC", to_tz="America/Sao_
 
     Keyword arguments:
 
-        date      (str):      date to convert
-        date_fmt  (str):      format of the date to convert
+        date           (str): date to convert
+        date_fmt       (str): format of the date to convert
         from_tz   (timezone): source timezone name (default: UTC)
         to_tz     (timezone): target timezone name (default: America/Sao_Paulo)
 

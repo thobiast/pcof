@@ -364,7 +364,7 @@ FUNCTIONS
         Convert number in bytes to human format.
 
         Arguments:
-            size        (int): bytes to be converted
+            size       (int): bytes to be converted
 
         Keyword arguments (opt):
             unit       (str): If it will convert bytes to a specific unit
@@ -438,7 +438,7 @@ FUNCTIONS
                            1 January 1970
 
         Arguments (opt):
-            days       (int):   Number of days ago to return unix timestamp
+            days         (int): Number of days ago to return unix timestamp
                                 default is 1 day
 
         Keyword arguments (opt):
@@ -458,7 +458,7 @@ FUNCTIONS
                            1 January 1970
 
         Arguments (opt):
-            hours     (int):    Number of hours ago to return unix timestamp
+            hours        (int): Number of hours ago to return unix timestamp
                                 default is 1 hour
 
         Keyword arguments (opt):
@@ -478,7 +478,7 @@ FUNCTIONS
                            1 January 1970
 
         Arguments (opt):
-            minutes  (int): Number of minutes ago to return unix timestamp
+            minutes        (int): Number of minutes ago to return unix timestamp
                             default is 5 minutes
 
         Keyword arguments (opt):
@@ -512,10 +512,10 @@ FUNCTIONS
                            1 January 1970
 
         Arguments:
-            epoch       (int):    unix epoch time (timestamp)
+            epoch          (int): unix epoch time (timestamp)
 
         Keyword arguments (opt):
-            date_format (str):    strftime format to show the epoch time
+            date_format    (str): strftime format to show the epoch time
                                   default is '%c' (Locale’s appropriate
                                   date and time representation)
             utc         (yes/no): If unix epoch time in UTC timezone
@@ -533,11 +533,11 @@ FUNCTIONS
         Convert number in seconds to human format.
 
         Arguments:
-            seconds   (int):                               Number of seconds
+            seconds      (int): Number of seconds
 
         Keyword arguments (opt):
-            unit      (Months/Days/Hours/Minutes/Seconds): Max unit used
-                                                           to convert
+            unit         (Months/Days/Hours/Minutes/Seconds):
+                                Max unit used to convert
 
         Example:
         >>> seconds_to_human(300)
@@ -557,21 +557,21 @@ FUNCTIONS
         Convert number from a time unit to another time unit.
 
         Arguments:
-            number       (int): Number to convert
+            number             (int): number to convert
 
         Keyword arguments:
             from_unit    (seconds/minutes/hours/days/weeks/months/years):
-                            unit to convert from
+                                      unit to convert from
             to_unit      (seconds/minutes/hours/days/weeks/months/years):
-                            unit to convert to
+                                      unit to convert to
 
         Keyword arguments (opt):
-            precision    (int): number of digits after the decimal point
-                            (default 0)
-            days_month   (int/float):  number of days in each month
-                            (default 30)
-            days_year    (int/float):  number of days in each year
-                            (default 365)
+            precision          (int): number of digits after the decimal point
+                                      (default 0)
+            days_month   (int/float): number of days in each month
+                                      (default 30)
+            days_year    (int/float): number of days in each year
+                                      (default 365)
 
         Return:
             number converted to new unit
@@ -739,8 +739,8 @@ FUNCTIONS
 
         Keyword arguments:
 
-            date      (str):      date to convert
-            date_fmt  (str):      format of the date to convert
+            date           (str): date to convert
+            date_fmt       (str): format of the date to convert
             from_tz   (timezone): source timezone name (default: UTC)
             to_tz     (timezone): target timezone name (default: America/Sao_Paulo)
 

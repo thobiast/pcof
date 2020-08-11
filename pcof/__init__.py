@@ -5,14 +5,18 @@ Python Collection Of Functions.
 A collection of small useful functions.
 
 Usage help:
-    Importing package does not give access to modules' function.
+    Importing package does not give access to modules' functions.
     It is required to import each module to check its function help
-    and to use the functions.
+    and to use its functions.
 
-    Exemple:
+    Example:
         import pcof.decorators
         help(pcof.decorators)
 
+        from pcof import bytesconv
+        help(bytesconv)
+        bytesconv.bytes2human(2048)
+            ('2.00', 'KB')
 """
 
 __name__ = "pcof"

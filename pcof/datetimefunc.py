@@ -27,10 +27,10 @@ def epoch_time_to_human(epoch, *, date_format="%c", utc="no"):  # pragma: no cov
                        1 January 1970
 
     Arguments:
-        epoch       (int):    unix epoch time (timestamp)
+        epoch          (int): unix epoch time (timestamp)
 
     Keyword arguments (opt):
-        date_format (str):    strftime format to show the epoch time
+        date_format    (str): strftime format to show the epoch time
                               default is '%c' (Locale’s appropriate
                               date and time representation)
         utc         (yes/no): If unix epoch time in UTC timezone
@@ -85,7 +85,7 @@ def epoch_time_min_ago(minutes=5, *, utc="no"):
                        1 January 1970
 
     Arguments (opt):
-        minutes  (int): Number of minutes ago to return unix timestamp
+        minutes        (int): Number of minutes ago to return unix timestamp
                         default is 5 minutes
 
     Keyword arguments (opt):
@@ -112,7 +112,7 @@ def epoch_time_hours_ago(hours=1, *, utc="no"):
                        1 January 1970
 
     Arguments (opt):
-        hours     (int):    Number of hours ago to return unix timestamp
+        hours        (int): Number of hours ago to return unix timestamp
                             default is 1 hour
 
     Keyword arguments (opt):
@@ -139,7 +139,7 @@ def epoch_time_days_ago(days=1, *, utc="no"):
                        1 January 1970
 
     Arguments (opt):
-        days       (int):   Number of days ago to return unix timestamp
+        days         (int): Number of days ago to return unix timestamp
                             default is 1 day
 
     Keyword arguments (opt):
@@ -171,21 +171,21 @@ def time_unit_conversion(
     Convert number from a time unit to another time unit.
 
     Arguments:
-        number       (int): Number to convert
+        number             (int): number to convert
 
     Keyword arguments:
         from_unit    (seconds/minutes/hours/days/weeks/months/years):
-                        unit to convert from
+                                  unit to convert from
         to_unit      (seconds/minutes/hours/days/weeks/months/years):
-                        unit to convert to
+                                  unit to convert to
 
     Keyword arguments (opt):
-        precision    (int): number of digits after the decimal point
-                        (default 0)
-        days_month   (int/float):  number of days in each month
-                        (default 30)
-        days_year    (int/float):  number of days in each year
-                        (default 365)
+        precision          (int): number of digits after the decimal point
+                                  (default 0)
+        days_month   (int/float): number of days in each month
+                                  (default 30)
+        days_year    (int/float): number of days in each year
+                                  (default 365)
 
     Return:
         number converted to new unit
@@ -231,11 +231,11 @@ def seconds_to_human(seconds, *, unit=None):
     Convert number in seconds to human format.
 
     Arguments:
-        seconds   (int):                               Number of seconds
+        seconds      (int): Number of seconds
 
     Keyword arguments (opt):
-        unit      (Months/Days/Hours/Minutes/Seconds): Max unit used
-                                                       to convert
+        unit         (Months/Days/Hours/Minutes/Seconds):
+                            Max unit used to convert
 
     Example:
     >>> seconds_to_human(300)
@@ -274,6 +274,8 @@ def seconds_to_human(seconds, *, unit=None):
     elif seconds < 0:
         raise TypeError("error: seconds_to_human: seconds must be greater than 0")
 
+    # If unit is specified, fix seconds_list to contain only
+    # granularity required and lower
     if unit:
         try:
             index = [a for a, b in enumerate(seconds_list) if b[0] == unit][0]
@@ -282,8 +284,12 @@ def seconds_to_human(seconds, *, unit=None):
         seconds_list = seconds_list[index:]
 
     result = []
+    # Loop over seconds_list
     for unit_name, unit_value_in_sec in seconds_list:
+        # Check if the seconds can be divided by seconds in that granularity
         num_unit = seconds // unit_value_in_sec
+        # If division would occur, decrease number of seconds and store
+        # number of granularity and the granularity name in the result
         if num_unit:
             seconds -= num_unit * unit_value_in_sec
             result.append("{} {}".format(num_unit, unit_name))

@@ -13,7 +13,7 @@ def bytes2human(size, *, unit="", precision=2, base=1024):
     Convert number in bytes to human format.
 
     Arguments:
-        size        (int): bytes to be converted
+        size       (int): bytes to be converted
 
     Keyword arguments (opt):
         unit       (str): If it will convert bytes to a specific unit
