@@ -73,4 +73,34 @@ def x_pct_of_number(pct, number, *, precision="2"):  # pragma: no cover
     return "{0:.{prec}f}".format(num, prec=precision)
 
 
+def pct_change_from_x_to_y(number1, number2, *, precision="2"):  # pragma: no cover
+    """
+    Calculate percent increase/decrease from number1 to number2.
+
+    Arguments:
+        number1    (int): start value (from)
+        number2    (int): end value (to)
+
+    Keyword arguments (opt):
+        precision  (int): number of digits after the decimal point
+                          default is 2
+
+    Returns:
+        (str):  number
+
+    Example:
+    >>> pct_change_from_x_to_y(100, 110)  # what is the pct increase from 100 to 110?
+    '10.00%'
+    >>> pct_change_from_x_to_y(100, 90)   # what is the pct from 100 to 90?
+    '-10.00%'
+    >>> pct_change_from_x_to_y(25, 50, precision=0)
+    '100%'
+    """
+    try:
+        num_pct = ((number2 - number1) / number1) * 100
+        return "{0:.{prec}f}%".format(num_pct, prec=precision)
+    except ZeroDivisionError:
+        return "{0:.{prec}f}%".format(0, prec=precision)
+
+
 # vim: ts=4
