@@ -3,6 +3,8 @@
 Python Collection Of Functions.
 
 Package with collection of small useful functions.
+
+Miscellaneous functions
 """
 
 

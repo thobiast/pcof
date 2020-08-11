@@ -3,7 +3,7 @@
 
 import sys
 import pytest
-from pcof import pcof
+from pcof import misc
 
 
 @pytest.mark.parametrize(
@@ -18,7 +18,7 @@ from pcof import pcof
 )
 def test_msg(capsys, color, msg, result):
     """Test msg function."""
-    pcof.msg(color, msg)
+    misc.msg(color, msg)
     captured = capsys.readouterr()
     assert captured.out == result
 
@@ -35,7 +35,7 @@ def test_msg(capsys, color, msg, result):
 )
 def test_msg_stderr(capsys, color, msg, result):
     """Test print to stderr."""
-    pcof.msg(color, msg, output=sys.stderr)
+    misc.msg(color, msg, output=sys.stderr)
     captured = capsys.readouterr()
     assert captured.err == result
 
@@ -50,7 +50,7 @@ def test_msg_stderr(capsys, color, msg, result):
 )
 def test_msg_end(capsys, color, msg, end, result):
     """Test end parameter."""
-    pcof.msg(color, msg, end=end)
+    misc.msg(color, msg, end=end)
     out, err = capsys.readouterr()
     assert out == result
 
@@ -61,7 +61,7 @@ def test_msg_end(capsys, color, msg, end, result):
 def test_msg_exit(color, msg, retcode):
     """Test exit code."""
     with pytest.raises(SystemExit) as pytest_wrapped_e:
-        pcof.msg(color, msg, retcode)
+        misc.msg(color, msg, retcode)
     assert pytest_wrapped_e.type == SystemExit
     assert pytest_wrapped_e.value.code == retcode
 
@@ -69,7 +69,7 @@ def test_msg_exit(color, msg, retcode):
 def test_msg_error():
     """Test invalid color."""
     with pytest.raises(ValueError, match="Invalid color"):
-        pcof.msg("invalid_color", "test")
+        misc.msg("invalid_color", "test")
 
 
 # vim: ts=4
