@@ -2,7 +2,7 @@
 """Test time_unit_conversion function."""
 
 import pytest
-from pcof import pcof
+from pcof import datetimefunc
 
 
 @pytest.mark.parametrize(
@@ -22,7 +22,8 @@ from pcof import pcof
 def test_time_unit_conversion_from_sec(num, from_unit, to_unit, result):
     """Test conversion from seconds."""
     assert (
-        pcof.time_unit_conversion(num, from_unit=from_unit, to_unit=to_unit) == result
+        datetimefunc.time_unit_conversion(num, from_unit=from_unit, to_unit=to_unit)
+        == result
     )
 
 
@@ -44,7 +45,8 @@ def test_time_unit_conversion_from_sec(num, from_unit, to_unit, result):
 def test_time_unit_conversion_from_min(num, from_unit, to_unit, result):
     """Test conversion from minutes."""
     assert (
-        pcof.time_unit_conversion(num, from_unit=from_unit, to_unit=to_unit) == result
+        datetimefunc.time_unit_conversion(num, from_unit=from_unit, to_unit=to_unit)
+        == result
     )
 
 
@@ -68,7 +70,8 @@ def test_time_unit_conversion_from_min(num, from_unit, to_unit, result):
 def test_time_unit_conversion_from_hours(num, from_unit, to_unit, result):
     """Test conversion from hours."""
     assert (
-        pcof.time_unit_conversion(num, from_unit=from_unit, to_unit=to_unit) == result
+        datetimefunc.time_unit_conversion(num, from_unit=from_unit, to_unit=to_unit)
+        == result
     )
 
 
@@ -92,7 +95,8 @@ def test_time_unit_conversion_from_hours(num, from_unit, to_unit, result):
 def test_time_unit_conversion_from_days(num, from_unit, to_unit, result):
     """Test conversion from days."""
     assert (
-        pcof.time_unit_conversion(num, from_unit=from_unit, to_unit=to_unit) == result
+        datetimefunc.time_unit_conversion(num, from_unit=from_unit, to_unit=to_unit)
+        == result
     )
 
 
@@ -113,7 +117,8 @@ def test_time_unit_conversion_from_days(num, from_unit, to_unit, result):
 def test_time_unit_conversion_from_weeks(num, from_unit, to_unit, result):
     """Test conversion from weeks."""
     assert (
-        pcof.time_unit_conversion(num, from_unit=from_unit, to_unit=to_unit) == result
+        datetimefunc.time_unit_conversion(num, from_unit=from_unit, to_unit=to_unit)
+        == result
     )
 
 
@@ -133,7 +138,8 @@ def test_time_unit_conversion_from_weeks(num, from_unit, to_unit, result):
 def test_time_unit_conversion_from_months(num, from_unit, to_unit, result):
     """Test conversion from months."""
     assert (
-        pcof.time_unit_conversion(num, from_unit=from_unit, to_unit=to_unit) == result
+        datetimefunc.time_unit_conversion(num, from_unit=from_unit, to_unit=to_unit)
+        == result
     )
 
 
@@ -154,7 +160,8 @@ def test_time_unit_conversion_from_months(num, from_unit, to_unit, result):
 def test_time_unit_conversion_from_years(num, from_unit, to_unit, result):
     """Test conversion from years."""
     assert (
-        pcof.time_unit_conversion(num, from_unit=from_unit, to_unit=to_unit) == result
+        datetimefunc.time_unit_conversion(num, from_unit=from_unit, to_unit=to_unit)
+        == result
     )
 
 
@@ -171,7 +178,7 @@ def test_time_unit_conversion_from_years(num, from_unit, to_unit, result):
 def test_time_unit_conversion_precision(num, from_unit, to_unit, prec, result):
     """Test precision conversion."""
     assert (
-        pcof.time_unit_conversion(
+        datetimefunc.time_unit_conversion(
             num, from_unit=from_unit, to_unit=to_unit, precision=prec
         )
         == result
@@ -190,7 +197,7 @@ def test_time_unit_conversion_precision(num, from_unit, to_unit, prec, result):
 def test_time_unit_conversion_custom_month(num, from_unit, to_unit, d_month, result):
     """Test conversion with custom day month."""
     assert (
-        pcof.time_unit_conversion(
+        datetimefunc.time_unit_conversion(
             num, from_unit=from_unit, to_unit=to_unit, precision=4, days_month=d_month,
         )
         == result
@@ -201,16 +208,16 @@ def test_time_unit_conversion_custom_month(num, from_unit, to_unit, d_month, res
 def test_time_unit_conversion_raise():
     """Test exceptions."""
     with pytest.raises(ValueError, match=r"Invalid unit. It must be.*"):
-        pcof.time_unit_conversion(1, from_unit="xxxxx", to_unit="hours")
+        datetimefunc.time_unit_conversion(1, from_unit="xxxxx", to_unit="hours")
 
     with pytest.raises(ValueError, match=r"Invalid unit. It must be.*"):
-        pcof.time_unit_conversion(1, from_unit="hours", to_unit="xxxx")
+        datetimefunc.time_unit_conversion(1, from_unit="hours", to_unit="xxxx")
 
     with pytest.raises(ValueError, match=r"Invalid unit. It must be.*"):
-        pcof.time_unit_conversion(1, from_unit="xxx", to_unit="xxxx")
+        datetimefunc.time_unit_conversion(1, from_unit="xxx", to_unit="xxxx")
 
     with pytest.raises(TypeError, match="number must be int"):
-        pcof.time_unit_conversion("x", from_unit="hours", to_unit="hours")
+        datetimefunc.time_unit_conversion("x", from_unit="hours", to_unit="hours")
 
 
 # vim: ts=4
