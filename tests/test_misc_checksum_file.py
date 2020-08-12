@@ -2,7 +2,7 @@
 """Test checksum_file function."""
 
 import pytest
-from pcof import pcof
+from pcof import misc
 
 
 @pytest.mark.parametrize(
@@ -17,14 +17,14 @@ from pcof import pcof
     ],
 )
 def test_checksum_file(filename, algorithm, result):
-    assert pcof.checksum_file(filename, algorithm=algorithm) == result
+    assert misc.checksum_file(filename, algorithm=algorithm) == result
 
 
 def test_checksum_file_raise():
     with pytest.raises(TypeError, match="hash algorithm not supported"):
-        pcof.checksum_file("file", algorithm="hashnotexist")
+        misc.checksum_file("file", algorithm="hashnotexist")
     with pytest.raises(TypeError, match="block_size should be int"):
-        pcof.checksum_file("file", block_size="10")
+        misc.checksum_file("file", block_size="10")
 
 
 # vim: ts=4

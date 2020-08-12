@@ -2,7 +2,7 @@
 """Test find_key function."""
 
 import pytest
-from pcof import pcof
+from pcof import misc
 
 # Disable black. Better to see nested dict to test
 # fmt: off
@@ -40,7 +40,7 @@ DICT_1 = {
     ],
 )
 def test_find_key(key, result):
-    assert pcof.find_key(DICT_1, key) == result
+    assert misc.find_key(DICT_1, key) == result
 
 
 # vim: ts=4

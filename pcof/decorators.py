@@ -4,11 +4,9 @@ Python Collection Of Functions.
 
 Package with collection of small useful functions.
 
-pcof Decorators
+Decorators functions
 """
 
-# Author: Thobias Salazar Trevisan
-# Site: http://thobias.org
 
 import functools
 import logging

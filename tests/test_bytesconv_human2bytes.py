@@ -2,7 +2,7 @@
 """Test human2bytes function."""
 
 import pytest
-from pcof import pcof
+from pcof import bytesconv
 
 
 @pytest.mark.parametrize(
@@ -17,7 +17,7 @@ from pcof import pcof
     ],
 )
 def test_human2bytes(size, unit, result):
-    assert pcof.human2bytes(size, unit) == result
+    assert bytesconv.human2bytes(size, unit) == result
 
 
 @pytest.mark.parametrize(
@@ -30,7 +30,7 @@ def test_human2bytes(size, unit, result):
     ],
 )
 def test_human2bytes_precision(size, unit, precision, result):
-    assert pcof.human2bytes(size, unit, precision=precision) == result
+    assert bytesconv.human2bytes(size, unit, precision=precision) == result
 
 
 @pytest.mark.parametrize(
@@ -46,16 +46,16 @@ def test_human2bytes_precision(size, unit, precision, result):
     ],
 )
 def test_human2bytes_base(size, unit, base, result):
-    assert pcof.human2bytes(size, unit, base=base) == result
+    assert bytesconv.human2bytes(size, unit, base=base) == result
 
 
 def test_human2bytes_raise():
     with pytest.raises(ValueError, match="value is not a number"):
-        pcof.human2bytes("notnumber", "KB")
+        bytesconv.human2bytes("notnumber", "KB")
     with pytest.raises(
         ValueError, match="invalid unit. It must be KB, MB, GB, TB, PB, EB, ZB"
     ):
-        pcof.human2bytes(1, "XX")
+        bytesconv.human2bytes(1, "XX")
 
 
 # vim: ts=4

@@ -2,7 +2,7 @@
 """Test seconds_to_human function."""
 
 import pytest
-from pcof import pcof
+from pcof import datetimefunc
 
 
 @pytest.mark.parametrize(
@@ -18,11 +18,11 @@ from pcof import pcof
     ],
 )
 def test_seconds_to_human(seconds, result):
-    assert pcof.seconds_to_human(seconds) == result
+    assert datetimefunc.seconds_to_human(seconds) == result
 
 
 def test_seconds_to_human_zero():
-    assert pcof.seconds_to_human(0) == "0 Seconds"
+    assert datetimefunc.seconds_to_human(0) == "0 Seconds"
 
 
 @pytest.mark.parametrize(
@@ -34,18 +34,18 @@ def test_seconds_to_human_zero():
     ],
 )
 def test_seconds_to_human_unit(seconds, unit, result):
-    assert pcof.seconds_to_human(seconds, unit=unit) == result
+    assert datetimefunc.seconds_to_human(seconds, unit=unit) == result
 
 
 def test_seconds_to_human():
     with pytest.raises(
         TypeError, match="error: seconds_to_human: seconds must be greater than 0"
     ):
-        pcof.seconds_to_human(-10)
+        datetimefunc.seconds_to_human(-10)
     with pytest.raises(TypeError, match="error: seconds_to_human: unit is invalid"):
-        pcof.seconds_to_human(10, unit="invalid")
+        datetimefunc.seconds_to_human(10, unit="invalid")
     with pytest.raises(TypeError, match="seconds must be int"):
-        pcof.seconds_to_human("10")
+        datetimefunc.seconds_to_human("10")
 
 
 # vim: ts=4

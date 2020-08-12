@@ -3,14 +3,14 @@
 
 import datetime
 import pytest
-from pcof import pcof
+from pcof.pytz import convert_datetime_to_tz
 
 
 def test_convert_datetime_to_tz():
     # from utc
     assert (
         str(
-            pcof.convert_datetime_to_tz(
+            convert_datetime_to_tz(
                 date="2019-04-26T10:38:05Z",
                 date_fmt="%Y-%m-%dT%H:%M:%SZ",
                 from_tz="UTC",
@@ -23,7 +23,7 @@ def test_convert_datetime_to_tz():
     # so it actually does not convert
     assert (
         str(
-            pcof.convert_datetime_to_tz(
+            convert_datetime_to_tz(
                 date="2019-04-26T10:38:05Z",
                 date_fmt="%Y-%m-%dT%H:%M:%SZ",
                 from_tz="America/Sao_Paulo",
@@ -35,7 +35,7 @@ def test_convert_datetime_to_tz():
     # difference one hour
     assert (
         str(
-            pcof.convert_datetime_to_tz(
+            convert_datetime_to_tz(
                 date="2019-04-26T10:38:05Z",
                 date_fmt="%Y-%m-%dT%H:%M:%SZ",
                 from_tz="America/Sao_Paulo",
@@ -45,7 +45,7 @@ def test_convert_datetime_to_tz():
         == "2019-04-26 09:38:05-04:00"
     )
     assert isinstance(
-        pcof.convert_datetime_to_tz(
+        convert_datetime_to_tz(
             date="2019-04-26T10:38:05Z",
             date_fmt="%Y-%m-%dT%H:%M:%SZ",
             from_tz="UTC",
