@@ -37,6 +37,15 @@ pip install --no-deps pcof
 
 >>> bytesconv.human2bytes(100, 'GB')
 '107374182400.00'
+>>> bytesconv.human2bytes(100, 'GB', base=1000)
+'100000000000.00'
+
+>>> bytesconv.bandwidth_converter(100, from_unit="Mbps", to_unit="MB")
+(12.5, 'MB/seconds')
+>>> bytesconv.bandwidth_converter(10, from_unit="Gbps", from_time="seconds", to_unit="GB", to_time="minutes")
+(75.0, 'GB/minutes')
+>>> bytesconv.bandwidth_converter(6, from_unit="GB", from_time="hours", to_unit="Mbps", to_time="seconds")
+(13.333333333333334, 'Mbps/seconds')
 
 >>> from pcof import datetimefunc
 
@@ -63,7 +72,6 @@ pip install --no-deps pcof
 
 >>> datetimefunc.time_unit_conversion(90, from_unit="days", to_unit="months")
 '3'
-
 
 >>> from pcof.pct import x_pct_of_number
 >>> x_pct_of_number(40, 200) # 40% of 200
@@ -117,6 +125,7 @@ Decorator time_elapsed: myfunc args: () kwargs: {} -  elapsed time 1.0011 second
 | misc | checksum_file |  Return checksums (hash) of a file. | - |
 | bytesconv | bytes2human |  Convert number in bytes to human format. | - |
 | bytesconv | human2bytes |  Convert size from human to bytes. | - |
+| bytesconv | bandwidth_converter |  Bandwidth Calculator. | - |
 | datetimefunc | epoch_time_to_human |  Convert a unix epoch time to human format. | - |
 | datetimefunc | epoch_time_now |  Return current date and time in unix epoch time format. | - |
 | datetimefunc | epoch_time_min_ago |  Return current date and time less x minutes in unix epoch time format. | - |
@@ -360,6 +369,56 @@ FUNCTIONS
 ```
 
 ```python
+    bandwidth_converter(number, *, from_unit, to_unit, from_time='seconds', to_time='seconds')
+        Bandwidth Calculator.
+
+        Convert data rate from one unit to another.
+
+        Arguments:
+            number     (int): number to be converted
+
+        Keyword arguments:
+            from_unit  (str): convert from this data unit. Example:
+                              (bps, Kbps, Mbps, Gbps... KB, KiB, MB, MiB...)
+            to_unit    (str): convert to this data unit. Example:
+                              (bps, Kbps, Mbps, Gbps... KB, KiB, MB, MiB...)
+
+        Keyword arguments (opt):
+            from_time  (str): Specify the time frame used in from_unit
+                              (seconds, minutes, hours, days, months)
+                              default: seconds
+            to_time    (str): Specify the time frame used in to_unit
+                              (seconds, minutes, hours, days, months)
+                              default: seconds
+
+        bps, Kbps, Mbps, Gbps... = decimal base = 1000^n
+        KB, MB, GB, TB...        = decimal base = 1000^n
+        KiB, MiB, GiB, TiB...    = binary base  = 1024^n
+
+        References:
+            - https://en.wikipedia.org/wiki/Units_of_information
+            - https://physics.nist.gov/cuu/Units/binary.html
+
+        Returns: tuple
+           (number_converted, to_unit/to_time)
+
+        Example:
+        >>> bandwidth_converter(100, from_unit="Mbps", to_unit="MB")
+        (12.5, 'MB/seconds')
+        >>> bandwidth_converter(100, from_unit="Mbps", to_unit="GB", to_time="hours")
+        (45.0, 'GB/hours')
+        >>> bandwidth_converter(1, from_unit="Gbps", to_unit="MB")
+        (125.0, 'MB/seconds')
+        >>> bandwidth_converter(10, from_unit="Gbps", to_unit="GB")
+        (1.25, 'GB/seconds')
+        >>> bandwidth_converter(10, from_unit="Gbps", to_unit="TB", to_time="hours")
+        (4.5, 'TB/hours')
+        >>> bandwidth_converter(10, from_unit="GB", to_unit="Gbps")
+        (80.0, 'Gbps/seconds')
+        >>> Convert 2.25 GB per hours to Mbps # doctest: +SKIP
+        >>> bandwidth_converter(2.25, from_unit="GB", from_time="hours", to_unit="Mbps", to_time="seconds") # noqa
+        (5.0, 'Mbps/seconds')
+
     bytes2human(size, *, unit='', precision=2, base=1024)
         Convert number in bytes to human format.
 
@@ -377,7 +436,7 @@ FUNCTIONS
             (int): number
             (str): unit ('Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB']
 
-        Exemple:
+        Example:
         >>> bytes2human(10)
         ('10.00', 'Bytes')
         >>> bytes2human(2048)
@@ -407,12 +466,12 @@ FUNCTIONS
             (int) number in bytes
 
         Example:
-            >>> human2bytes(10, 'GB')
-            '10737418240.00'
-            >>> human2bytes(10, 'GB', precision=0)
-            '10737418240'
-            >>> human2bytes(10, 'PB')
-            '11258999068426240.00'
+        >>> human2bytes(10, 'GB')
+        '10737418240.00'
+        >>> human2bytes(10, 'GB', precision=0)
+        '10737418240'
+        >>> human2bytes(10, 'PB')
+        '11258999068426240.00'
 
 ```
 ```
