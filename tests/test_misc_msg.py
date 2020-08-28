@@ -56,7 +56,12 @@ def test_msg_end(capsys, color, msg, end, result):
 
 
 @pytest.mark.parametrize(
-    "color, msg, retcode", [("red", "test", 8), ("", "test", 10), ("blue", "test", 2),]
+    "color, msg, retcode",
+    [
+        ("red", "test", 8),
+        ("", "test", 10),
+        ("blue", "test", 2),
+    ],
 )
 def test_msg_exit(color, msg, retcode):
     """Test exit code."""
