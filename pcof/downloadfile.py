@@ -30,7 +30,7 @@ def download_file(url, local_file, *, allow_redirects=True, decode=True):
     Return:
         Request response headers
 
-    Exemple:
+    Example:
     >>> download_file("http://google.com/favicon.ico", # doctest: +SKIP
                       "/tmp/google.ico")
     """

@@ -400,7 +400,7 @@ def checksum_file(filename, *, algorithm="sha256", block_size=1048576):
     return:
         hex-encoded string
 
-    Exemple:
+    Example:
     >>> checksum_file("my_file") # doctest: +SKIP
     '179b8c9510b2f068b94286c86610c6fe633ca44b5e541837ae9461bbdace7191'
     >>> checksum_file("my_file", algorithm="md5") # doctest: +SKIP

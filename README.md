@@ -180,7 +180,7 @@ FUNCTIONS
         return:
             hex-encoded string
 
-        Exemple:
+        Example:
         >>> checksum_file("my_file") # doctest: +SKIP
         '179b8c9510b2f068b94286c86610c6fe633ca44b5e541837ae9461bbdace7191'
         >>> checksum_file("my_file", algorithm="md5") # doctest: +SKIP
@@ -697,7 +697,7 @@ FUNCTIONS
         Returns:
             (str):  number
 
-        Exemple:
+        Example:
         >>> x_pct_of_number(33.333, 90)     # what is 33.333% of 90?
         '30.00'
         >>> x_pct_of_number(40, 200)        # what is 40% of 200?
@@ -864,7 +864,7 @@ FUNCTIONS
         Return:
             Request response headers
 
-        Exemple:
+        Example:
         >>> download_file("http://google.com/favicon.ico", # doctest: +SKIP
                           "/tmp/google.ico")
 

@@ -57,7 +57,7 @@ def x_pct_of_number(pct, number, *, precision="2"):  # pragma: no cover
     Returns:
         (str):  number
 
-    Exemple:
+    Example:
     >>> x_pct_of_number(33.333, 90)     # what is 33.333% of 90?
     '30.00'
     >>> x_pct_of_number(40, 200)        # what is 40% of 200?
