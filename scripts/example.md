@@ -10,6 +10,15 @@
 
 >>> bytesconv.human2bytes(100, 'GB')
 '107374182400.00'
+>>> bytesconv.human2bytes(100, 'GB', base=1000)
+'100000000000.00'
+
+>>> bytesconv.bandwidth_converter(100, from_unit="Mbps", to_unit="MB")
+(12.5, 'MB/seconds')
+>>> bytesconv.bandwidth_converter(10, from_unit="Gbps", from_time="seconds", to_unit="GB", to_time="minutes")
+(75.0, 'GB/minutes')
+>>> bytesconv.bandwidth_converter(6, from_unit="GB", from_time="hours", to_unit="Mbps", to_time="seconds")
+(13.333333333333334, 'Mbps/seconds')
 
 >>> from pcof import datetimefunc
 
@@ -36,7 +45,6 @@
 
 >>> datetimefunc.time_unit_conversion(90, from_unit="days", to_unit="months")
 '3'
-
 
 >>> from pcof.pct import x_pct_of_number
 >>> x_pct_of_number(40, 200) # 40% of 200

@@ -198,7 +198,11 @@ def test_time_unit_conversion_custom_month(num, from_unit, to_unit, d_month, res
     """Test conversion with custom day month."""
     assert (
         datetimefunc.time_unit_conversion(
-            num, from_unit=from_unit, to_unit=to_unit, precision=4, days_month=d_month,
+            num,
+            from_unit=from_unit,
+            to_unit=to_unit,
+            precision=4,
+            days_month=d_month,
         )
         == result
     )
